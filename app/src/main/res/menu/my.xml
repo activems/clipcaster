@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MyActivity" >
+    <item android:id="@+id/action_credlog"
+        android:title="Creds log"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+
+    <item android:id="@+id/action_cliplog"
+          android:title="Clip log"
+          android:orderInCategory="100"
+          android:showAsAction="never" />
+
+</menu>
