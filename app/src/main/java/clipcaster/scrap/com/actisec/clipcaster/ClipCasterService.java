@@ -10,13 +10,16 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Base64;
 import android.util.Pair;
+import android.widget.Toast;
 
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
@@ -30,6 +33,8 @@ import java.util.regex.Pattern;
  * Created by xcla001 on 28/10/14.
  */
 public class ClipCasterService extends Service {
+
+    public static final List<String> mClips = new ArrayList<String>();
     private static final int NOTIF_ID = 0xface1345;
     public static final String CLIPLOG_FILENAME = "clip.log";
     public static final String CREDLOG_FILENAME = "creds.log";
@@ -57,14 +62,20 @@ public class ClipCasterService extends Service {
     }
 
     void onClip(String text){
-
-        System.out.println(text);
-        writeToFile(CLIPLOG_FILENAME,text);
+        mClips.add(text);
         final Pair<String, String> creds = getCreds(text);
         if(creds != null){
-            writeToFile(CREDLOG_FILENAME,creds.first + "/" + creds.second);
+            postNotification(creds);
         }
-        updateNotification(text);
+//        onClipDebug(text,creds);
+    }
+
+    void onClipDebug(final String text, final Pair<String,String> creds){
+        System.out.println(text);
+        writeToFile(CLIPLOG_FILENAME, text);
+        if(creds != null) {
+            writeToFile(CREDLOG_FILENAME, creds.first + "/" + creds.second);
+        }
     }
 
     void writeToFile(String name, String text){
@@ -102,22 +113,21 @@ public class ClipCasterService extends Service {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    public void updateNotification(String what){
-        if(what == null){
-            what = "Listening";
-        }
-
+    public void postNotification(Pair<String, String> what){
         Notification.Builder builder = new Notification.Builder(this);
-        builder.setContentTitle("ClipCaster");
-        builder.setSmallIcon(android.R.drawable.ic_input_get);
-        builder.setContentText(what);
-        builder.setContentIntent(PendingIntent.getActivity(this, 0,new Intent(this, MyActivity.class),0));
+        builder.setContentTitle(getString(R.string.creds_notif_title));
+        builder.setSmallIcon(R.drawable.ic_launcher);
 
-        builder.setStyle(new Notification.BigTextStyle().bigText(what));
+        Spanned contentText = Html.fromHtml(getString(R.string.creds_notif_content, what.first, what.second));
+        Spanned contentTextBig = Html.fromHtml(getString(R.string.creds_notif_content_big, what.first, what.second));
+
+        builder.setContentText(contentText);
+        builder.setContentIntent(PendingIntent.getActivity(this, 0,new Intent(this, MyActivity.class),0));
+        builder.setTicker(contentText);
+
+        builder.setStyle(new Notification.BigTextStyle().bigText(contentTextBig));
         Notification n = builder.build();
-        n.flags |= Notification.FLAG_FOREGROUND_SERVICE;
-        n.flags |= Notification.FLAG_ONGOING_EVENT;
-        startForeground(NOTIF_ID, n);
+        ((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).notify(NOTIF_ID, n);
     }
 
     @Override
@@ -132,8 +142,23 @@ public class ClipCasterService extends Service {
 
     @Override
     public void onCreate(){
-
+        toast(this, "ClipCaster service starting", false);
         getManager().addPrimaryClipChangedListener(mListener);
+    }
+
+    @Override
+    public void onDestroy(){
+        toast(this, "ClipCaster service stopping", false);
+        getManager().removePrimaryClipChangedListener(mListener);
+    }
+
+    public static void toast(final Context context, final String message, final boolean showLonger){
+        new Handler(context.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                android.widget.Toast.makeText(context, message, (showLonger ? android.widget.Toast.LENGTH_LONG : Toast.LENGTH_SHORT)).show();
+            }
+        });
     }
 
     ClipboardManager getManager(){
