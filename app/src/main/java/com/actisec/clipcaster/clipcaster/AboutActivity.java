@@ -27,30 +27,37 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package clipcaster.scrap.com.actisec.clipcaster;
+package com.actisec.clipcaster.clipcaster;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ListActivity;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.text.Html;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * @author Xiao Bao Clark
  */
-public class FirstRunDialog {
-    public static View getView(Activity activity){
-        View dialogView = View.inflate(activity,R.layout.dialog_first_run,null);
-        final ViewGroup viewGroup = (ViewGroup) dialogView;
-        for(int i = 0; i < viewGroup.getChildCount(); i++){
-            final View childView = viewGroup.getChildAt(i);
-            if(childView instanceof TextView){
-                final TextView curr = (TextView) childView;
-                curr.setText(Html.fromHtml(curr.getText().toString()));
-            }
-        }
+public class AboutActivity extends Activity {
 
-        return dialogView;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(FirstRunDialog.getView(this));
     }
 
 }

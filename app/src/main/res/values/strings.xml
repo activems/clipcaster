@@ -39,7 +39,7 @@
     <string name="firstrun_password_not_stored"><![CDATA[We do <b>NOT</b> store the passwords or send them anywhere; this app does not even have the Internet permission. The only place they are used is in the notification when they are sniffed]]></string>
     <string name="firstrun_about_vulnerability"><![CDATA[The clipboard vulnerability is well known in the security community. The paper that inspired this proof of concept can be found at <a href="http://fc13.ifca.ai/proc/4–2.pdf">http://fc13.ifca.ai/proc/4–2.pdf</a>]]></string>
     <string name="firstrun_source_header"><![CDATA[<b>Source</b>]]></string>
-    <string name="firstrun_source"><![CDATA[<a href=https://bitbucket.org/xbao/clipcaster>https://bitbucket.org/xbao/clipcaster</a>]]></string>
+    <string name="firstrun_source"><![CDATA[<a href=https://github.com/activems/clipcaster>https://github.com/activems/clipcaster</a>]]></string>
     <string name="firstrun_title">About ClipCaster</string>
     <string name="act_clipboard_title">Clipboard History</string>
     <string name="clear">Clear</string>

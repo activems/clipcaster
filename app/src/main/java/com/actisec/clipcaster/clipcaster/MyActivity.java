@@ -27,7 +27,7 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package clipcaster.scrap.com.actisec.clipcaster;
+package com.actisec.clipcaster.clipcaster;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
