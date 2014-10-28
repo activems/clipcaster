@@ -12,6 +12,7 @@ On Android devices >4.3, LastPass offers to fill in credentials from within a th
 
 We read this and show the user the username/password that was entered.
 
+
 How
 ---
 
@@ -23,3 +24,8 @@ Why
 ---
 
 Consumers have a right to know what aspects of their security they're giving up when they enable these features. LastPass doesn't mention, or at the very least doesn't make as obvious it should, that any installed application can read the username and password when they fill-in their credentials via third-party browsers.
+
+Screenshots
+-----------
+
+![](https://raw.githubusercontent.com/activems/clipcaster/master/screenshots/ClipCasterFB_LP_Dialog_half.png) ![](https://raw.githubusercontent.com/activems/clipcaster/master/screenshots/ClipCasterFB_creds_ticker_half.png) ![](https://raw.githubusercontent.com/activems/clipcaster/master/screenshots/ClipCasterFB_creds_notif_half.png) ![](https://raw.githubusercontent.com/activems/clipcaster/master/screenshots/ClipCasterAbout_half.png)
