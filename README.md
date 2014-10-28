@@ -10,7 +10,7 @@ What
 
 On Android devices >4.3, LastPass offers to fill in credentials from within a third-party browser, such as Chrome. It does this in such a way that any installed application can read them, no permissions required.
 
-We read this and show the user the username/password that was entered.
+We parse the contents of the clipboard and show the user the username/password that was entered.
 
 
 How
