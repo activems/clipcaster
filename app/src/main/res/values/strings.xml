@@ -30,7 +30,7 @@
 
 <resources>
 
-    <string name="app_name">clipcaster</string>
+    <string name="app_name">ClipCaster</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="firstrun_intro">This app attempts to show how easily passwords autofilled using LastPass can be sniffed by malicious applications</string>
