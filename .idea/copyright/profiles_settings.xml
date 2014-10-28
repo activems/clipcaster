@@ -1,3 +1,7 @@
 <component name="CopyrightManager">
-  <settings default="" />
+  <settings default="">
+    <module2copyright>
+      <element module="ClipCasterSrc" copyright="Xiao Bao Clark" />
+    </module2copyright>
+  </settings>
 </component>
