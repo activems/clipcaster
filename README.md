@@ -20,10 +20,23 @@ To provide the filling in for chrome, LastPass copies to the clipboard a chunk o
 
 Any installed application can be notified of clipboard changes. Once the javascript is received, it's a simple matter of finding the encoded data and decoding it using standard Android libraries.
 
+Scope
+-----
+
+This doesn't affect just the LastPass app. Any password manager functionality that copies credentials to the clipboard is open to this interception. We chose LastPass as A) we were using it personally and B) the fill-in feature we targeted doesn't tell the user it uses the clipboard internally.
+
 Why
 ---
 
 Consumers have a right to know what aspects of their security they're giving up when they enable these features. LastPass doesn't mention, or at the very least doesn't make as obvious it should, that any installed application can read the username and password when they fill-in their credentials via third-party browsers.
+
+Disclosure
+----------
+
+As stated earlier, this is not an original exploit. Regardless, we disclosed our application to LastPass and they responded with the following:
+
+> This is a well-known issue, but is no worse than users manually copying and pasting credentials. App fill just automates the copy/paste process to provide a much better UX. Unfortunately, until Android introduces a secure clipboard feature, or allows direct integration with apps and the browser, there isn't much we can do about this in our app. In the meanwhile, we would recommend that users concerned about this issue not use apps they do not trust, not install apps from untrusted sources, or use the LastPass keyboard/input method to fill logins directly, which does not use the clipboard.
+
 
 Screenshots
 -----------
