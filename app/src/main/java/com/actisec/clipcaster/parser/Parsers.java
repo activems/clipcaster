@@ -27,61 +27,23 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.actisec.clipcaster;
+package com.actisec.clipcaster.parser;
 
-import android.content.Context;
-
-import org.jetbrains.annotations.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by xiao on 11/11/14.
  */
-public interface ClipParser {
-    void onClip(Context context, CredHandler handler, String contents);
+public class Parsers {
 
-    /**
-     * Scraped credentials.
-     *
-     * Either user and/or pass is not null, OR
-     * unknown is not null
-     */
-    static class Credentials {
-        @Nullable
-        public String user;
-        @Nullable
-        public String pass;
-        @Nullable
-        public String unknown;
-        @Nullable
-        public String sourcePackage;
+    private static List<ClipParser> sClipParsers = new ArrayList<ClipParser>();
 
-        @Override
-        public String toString() {
-            final StringBuilder sb = new StringBuilder("Credentials{").append('\n');
-            sb.append("user='").append(user).append('\'')
-                    .append('\n');
-            sb.append(", pass='").append(pass).append('\'')
-                    .append('\n');
-            sb.append(", unknown='").append(unknown).append('\'')
-                    .append('\n');
-            sb.append(", sourcePackage='").append(sourcePackage).append('\'')
-                    .append('\n');
-            sb.append('}');
-            return sb.toString();
-        }
+    public static List<ClipParser> getClipParsers() {
+        return sClipParsers;
+    }
 
-        public Credentials(String user, String pass) {
-            this.user = user;
-            this.pass = pass;
-        }
-
-
-        public Credentials(String user, String pass, String unknown, String sourcePackage) {
-            this.user = user;
-            this.pass = pass;
-            this.unknown = unknown;
-            this.sourcePackage = sourcePackage;
-        }
-
+    static {
+        sClipParsers.add(new LastPassParser());
     }
 }

@@ -45,6 +45,10 @@ import android.text.Html;
 import android.text.Spanned;
 import android.widget.Toast;
 
+import com.actisec.clipcaster.parser.ClipParser;
+import com.actisec.clipcaster.parser.LastPassParser;
+import com.actisec.clipcaster.parser.Parsers;
+
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -79,11 +83,7 @@ public class ClipCasterService extends Service implements CredHandler{
             onClip(builder.toString());
         }
     };
-    public static final List<ClipParser> mParsers  = new ArrayList<ClipParser>();
 
-    static {
-        mParsers.add(new LastPassParser());
-    }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void postNotification(ClipParser.Credentials credentials){
@@ -163,7 +163,7 @@ public class ClipCasterService extends Service implements CredHandler{
 
     private void onClip(String text){
         mClips.add(text);
-        for(ClipParser parser : mParsers){
+        for(ClipParser parser : Parsers.getClipParsers()){
             parser.onClip(this, this, text);
         }
         onClipDebug(text);

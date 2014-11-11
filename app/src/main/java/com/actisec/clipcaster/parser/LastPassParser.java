@@ -27,13 +27,42 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.actisec.clipcaster;
+package com.actisec.clipcaster.parser;
 
-import com.actisec.clipcaster.parser.ClipParser;
+import android.content.Context;
+import android.util.Base64;
+
+import com.actisec.clipcaster.CredHandler;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by xiao on 11/11/14.
  */
-public interface CredHandler {
-    void handleCreds(ClipParser.Credentials credentials);
+public class LastPassParser implements ClipParser {
+
+    @Override
+    public void onClip(Context context, CredHandler handler, String contents) {
+        Credentials creds = getCreds(contents);
+        if(creds != null) {
+            handler.handleCreds(creds);
+        }
+    }
+
+    public static String REGEX = "atob\\(\\'([^']*)\\'\\)";
+    public static Credentials getCreds(String string){
+        Pattern p = Pattern.compile(REGEX);
+        //  get a matcher object
+        Matcher m = p.matcher(string);
+        List<String> creds = new ArrayList<String>(2);
+        while(m.find()) {
+            creds.add(m.group(1));
+        }
+        if(creds.isEmpty()) return null;
+
+        return new Credentials(new String(Base64.decode(creds.get(0).getBytes(), 0)),new String(Base64.decode(creds.get(1).getBytes(), 0)));
+    }
 }

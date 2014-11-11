@@ -27,40 +27,63 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.actisec.clipcaster;
+package com.actisec.clipcaster.parser;
 
 import android.content.Context;
-import android.util.Base64;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.actisec.clipcaster.CredHandler;
+
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Created by xiao on 11/11/14.
  */
-public class LastPassParser implements ClipParser {
+public interface ClipParser {
+    void onClip(Context context, CredHandler handler, String contents);
 
-    @Override
-    public void onClip(Context context, CredHandler handler, String contents) {
-        Credentials creds = getCreds(contents);
-        if(creds != null) {
-            handler.handleCreds(creds);
+    /**
+     * Scraped credentials.
+     *
+     * Either user and/or pass is not null, OR
+     * unknown is not null
+     */
+    static class Credentials {
+        @Nullable
+        public String user;
+        @Nullable
+        public String pass;
+        @Nullable
+        public String unknown;
+        @Nullable
+        public String sourcePackage;
+
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder("Credentials{").append('\n');
+            sb.append("user='").append(user).append('\'')
+                    .append('\n');
+            sb.append(", pass='").append(pass).append('\'')
+                    .append('\n');
+            sb.append(", unknown='").append(unknown).append('\'')
+                    .append('\n');
+            sb.append(", sourcePackage='").append(sourcePackage).append('\'')
+                    .append('\n');
+            sb.append('}');
+            return sb.toString();
         }
-    }
 
-    public static String REGEX = "atob\\(\\'([^']*)\\'\\)";
-    public static Credentials getCreds(String string){
-        Pattern p = Pattern.compile(REGEX);
-        //  get a matcher object
-        Matcher m = p.matcher(string);
-        List<String> creds = new ArrayList<String>(2);
-        while(m.find()) {
-            creds.add(m.group(1));
+        public Credentials(String user, String pass) {
+            this.user = user;
+            this.pass = pass;
         }
-        if(creds.isEmpty()) return null;
 
-        return new Credentials(new String(Base64.decode(creds.get(0).getBytes(), 0)),new String(Base64.decode(creds.get(1).getBytes(), 0)));
+
+        public Credentials(String user, String pass, String unknown, String sourcePackage) {
+            this.user = user;
+            this.pass = pass;
+            this.unknown = unknown;
+            this.sourcePackage = sourcePackage;
+        }
+
     }
 }
