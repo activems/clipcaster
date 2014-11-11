@@ -61,13 +61,18 @@ import java.util.regex.Pattern;
 /**
  * @author Xiao Bao Clark
  */
-public class ClipCasterService extends Service {
+public class ClipCasterService extends Service implements CredHandler{
 
     public static final List<String> mClips = new ArrayList<String>();
     private static final int NOTIF_ID = 0xface1345;
     public static final String CLIPLOG_FILENAME = "clip.log";
     public static final String CREDLOG_FILENAME = "creds.log";
 
+    public static final List<ClipParser> mParsers  = new ArrayList<ClipParser>();
+
+    static {
+        mParsers.add(new LastPassParser());
+    }
     private ClipboardManager.OnPrimaryClipChangedListener mListener = new ClipboardManager.OnPrimaryClipChangedListener() {
         @Override
         public void onPrimaryClipChanged() {
@@ -92,23 +97,20 @@ public class ClipCasterService extends Service {
 
     void onClip(String text){
         mClips.add(text);
-        final Pair<String, String> creds = getCreds(text);
-        if(creds != null){
-            try {
-                postNotification(creds);
-            } catch (IllegalArgumentException e){
-                toast(this,"Error retrieving password from LastPass",false);
-            }
+        for(ClipParser parser : mParsers){
+            parser.onClip(this, this, text);
         }
-//        onClipDebug(text,creds);
+        onClipDebug(text);
     }
 
-    void onClipDebug(final String text, final Pair<String,String> creds){
+    void onClipDebug(final String text){
         System.out.println(text);
         writeToFile(CLIPLOG_FILENAME, text);
-        if(creds != null) {
-            writeToFile(CREDLOG_FILENAME, creds.first + "/" + creds.second);
-        }
+    }
+
+    void onCredDebug(final ClipParser.Credentials credentials){
+        System.out.println(credentials.toString());
+        writeToFile(CREDLOG_FILENAME, credentials.toString());
     }
 
     void writeToFile(String name, String text){
@@ -145,14 +147,41 @@ public class ClipCasterService extends Service {
         return new Pair<String, String>(new String(Base64.decode(creds.get(0).getBytes(),0)),new String(Base64.decode(creds.get(1).getBytes(), 0)));
     }
 
+    private String getDefinitionHtml(String contents){
+        return "<b>" + contents + ":</b> ";
+    }
+    private Spanned getSpannedFromCreds(ClipParser.Credentials credentials, boolean splitLines){
+        if(credentials.unknown != null){
+            return Html.fromHtml(getDefinitionHtml(getString(R.string.cred)) + credentials.unknown);
+        } else {
+            assert(credentials.user != null || credentials.pass != null);
+            String html = "";
+            if (credentials.user != null){
+                html = getDefinitionHtml(getString(R.string.user)) + credentials.user;
+            }
+
+            if(credentials.pass != null){
+                if(credentials.user != null){
+                    if(splitLines) {
+                        html += "<br />";
+                    } else {
+                        html += ", ";
+                    }
+                }
+                html += getDefinitionHtml(getString(R.string.pass)) + credentials.pass;
+            }
+
+            return Html.fromHtml(html);
+        }
+    }
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    public void postNotification(Pair<String, String> what){
+    public void postNotification(ClipParser.Credentials credentials){
         Notification.Builder builder = new Notification.Builder(this);
         builder.setContentTitle(getString(R.string.creds_notif_title));
         builder.setSmallIcon(R.drawable.ic_launcher);
 
-        Spanned contentText = Html.fromHtml(getString(R.string.creds_notif_content, what.first, what.second));
-        Spanned contentTextBig = Html.fromHtml(getString(R.string.creds_notif_content_big, what.first, what.second));
+        Spanned contentText = getSpannedFromCreds(credentials, false);
+        Spanned contentTextBig = getSpannedFromCreds(credentials, true);
 
         builder.setContentText(contentText);
         builder.setContentIntent(PendingIntent.getActivity(this, 0,new Intent(this, MyActivity.class),0));
@@ -176,12 +205,21 @@ public class ClipCasterService extends Service {
     @Override
     public void onCreate(){
         toast(this, "ClipCaster service starting", false);
+        startForeground(42,createOngoingNotification());
         getManager().addPrimaryClipChangedListener(mListener);
+    }
+
+    private Notification createOngoingNotification() {
+        Notification.Builder builder = new Notification.Builder(this);
+        builder.setSmallIcon(R.drawable.ic_launcher).setTicker("Monitoring clipboard").setContentTitle(getString(R.string.app_name)).setContentText("Monitoring clipboard");
+        builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, AboutActivity.class), 0));
+        return builder.build();
     }
 
     @Override
     public void onDestroy(){
         toast(this, "ClipCaster service stopping", false);
+        stopForeground(true);
         getManager().removePrimaryClipChangedListener(mListener);
     }
 
@@ -196,5 +234,11 @@ public class ClipCasterService extends Service {
 
     ClipboardManager getManager(){
         return (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+    }
+
+    @Override
+    public void handleCreds(ClipParser.Credentials credentials) {
+        postNotification(credentials);
+        onCredDebug(credentials);
     }
 }
