@@ -45,6 +45,8 @@ public class KeePassDroidParser extends PackageSpecificClipParser {
     @Override
     ScrapedCredentials getCreds(Context context, String contents, List<String> matchedPackage, int orderOfTask) {
 
+        if(contents.isEmpty()) return null;
+
         matchedPackage.remove(context.getPackageName());
         orderOfTask = matchedPackage.indexOf(PACKAGE_NAME);
 
