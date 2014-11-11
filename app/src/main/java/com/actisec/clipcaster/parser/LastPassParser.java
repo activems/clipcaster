@@ -32,8 +32,6 @@ package com.actisec.clipcaster.parser;
 import android.content.Context;
 import android.util.Base64;
 
-import com.actisec.clipcaster.CredHandler;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -45,12 +43,12 @@ import java.util.regex.Pattern;
 public class LastPassParser extends AbstractClipParser {
 
     @Override
-    Credentials getCreds(Context context, String contents) {
+    ScrapedCredentials getCreds(Context context, String contents) {
         return sGetCreds(contents);
     }
 
     public static String REGEX = "atob\\(\\'([^']*)\\'\\)";
-    public static Credentials sGetCreds(String string){
+    public static ScrapedCredentials sGetCreds(String string){
         Pattern p = Pattern.compile(REGEX);
         //  get a matcher object
         Matcher m = p.matcher(string);
@@ -60,6 +58,6 @@ public class LastPassParser extends AbstractClipParser {
         }
         if(creds.isEmpty()) return null;
 
-        return new Credentials(new String(Base64.decode(creds.get(0).getBytes(), 0)),new String(Base64.decode(creds.get(1).getBytes(), 0)));
+        return new ScrapedCredentials(new String(Base64.decode(creds.get(0).getBytes(), 0)),new String(Base64.decode(creds.get(1).getBytes(), 0)));
     }
 }

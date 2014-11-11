@@ -31,19 +31,35 @@ package com.actisec.clipcaster.parser;
 
 import android.content.Context;
 
-import com.actisec.clipcaster.CredHandler;
+import java.util.List;
 
 /**
  * Created by xiao on 11/11/14.
  */
-public abstract class AbstractClipParser implements ClipParser {
-    @Override
-    public void onClip(Context context, CredHandler handler, String contents) {
-        ScrapedCredentials creds = getCreds(context, contents);
-        if(creds != null) {
-            handler.handleCreds(creds);
-        }
+public class KeePassDroidParser extends PackageSpecificClipParser {
+    private static final String PACKAGE_NAME = "com.android.keepass";
+    public KeePassDroidParser() {
+        super(PACKAGE_NAME);
     }
 
-    abstract ScrapedCredentials getCreds(Context context, String contents);
+    @Override
+    ScrapedCredentials getCreds(Context context, String contents, List<String> matchedPackage, int orderOfTask) {
+
+        matchedPackage.remove(context.getPackageName());
+        orderOfTask = matchedPackage.indexOf(PACKAGE_NAME);
+
+        ScrapedCredentials result = new ScrapedCredentials();
+        result.unknown = contents;
+        result.sourcePackage = PACKAGE_NAME;
+        switch (orderOfTask){
+            case 0:
+                break;
+            case 1:
+                result.isCertain = false;
+                break;
+            default:
+                return null;
+        }
+        return result;
+    }
 }

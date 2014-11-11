@@ -47,7 +47,7 @@ public interface ClipParser {
      * Either user and/or pass is not null, OR
      * unknown is not null
      */
-    static class Credentials {
+    static class ScrapedCredentials {
         @Nullable
         public String user;
         @Nullable
@@ -57,9 +57,15 @@ public interface ClipParser {
         @Nullable
         public String sourcePackage;
 
+        public boolean isCertain = true;
+
+        public ScrapedCredentials() {
+
+        }
+
         @Override
         public String toString() {
-            final StringBuilder sb = new StringBuilder("Credentials{").append('\n');
+            final StringBuilder sb = new StringBuilder("ScrapedCredentials{").append('\n');
             sb.append("user='").append(user).append('\'')
                     .append('\n');
             sb.append(", pass='").append(pass).append('\'')
@@ -68,17 +74,19 @@ public interface ClipParser {
                     .append('\n');
             sb.append(", sourcePackage='").append(sourcePackage).append('\'')
                     .append('\n');
+            sb.append(", isCertain=").append(isCertain)
+                    .append('\n');
             sb.append('}');
             return sb.toString();
         }
 
-        public Credentials(String user, String pass) {
+        public ScrapedCredentials(String user, String pass) {
             this.user = user;
             this.pass = pass;
         }
 
 
-        public Credentials(String user, String pass, String unknown, String sourcePackage) {
+        public ScrapedCredentials(String user, String pass, String unknown, String sourcePackage) {
             this.user = user;
             this.pass = pass;
             this.unknown = unknown;

@@ -35,5 +35,5 @@ import com.actisec.clipcaster.parser.ClipParser;
  * Created by xiao on 11/11/14.
  */
 public interface CredHandler {
-    void handleCreds(ClipParser.Credentials credentials);
+    void handleCreds(ClipParser.ScrapedCredentials credentials);
 }

@@ -30,25 +30,20 @@
 
 <resources>
 
-    <string name="app_name">ClipCaster</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-
-    <string name="act_clipboard_title">Clipboard History</string>
-    <string name="clear">Clear</string>
-    <string name="about">About</string>
-    <string name="creds_notif_title">Credentials Sniffed</string>
-    <string name="cliplist_empty">Empty clipboard history</string>
-    <string name="user">User</string>
-    <string name="pass">Pass</string>
-    <string name="cred">Cred</string>
-
-    <string name="service_start_toggle_on">Service Running</string>
-    <string name="service_start_toggle_off">Service Stopped</string>
-
-
-    <string name="creds_notif_content_user_pass">&lt;b>User&lt;/b>: %1$s, &lt;b>Pass&lt;/b>: %2$s</string>
-    <string name="creds_notif_content_big">&lt;b>User&lt;/b>: %1$s&lt;br/>&lt;b>Pass&lt;/b>: %2$s</string>
-    <string name="service_toggle_pretext">&lt;b>Monitoring: &lt;/b></string>
-
+    <string name="firstrun_intro">This app attempts to show how easily passwords autofilled using some password managers can be sniffed by malicious applications</string>
+    <string name="firstrun_supported_apps_header"><![CDATA[<b>Supported Apps</b>]]></string>
+    <string-array
+        name="firstrun_supported_apps">
+        <item>LastPass: Chrome autofill</item>
+        <item>
+            KeePassDroid: Copying from notification (must have been recently opened)
+        </item>
+    </string-array>
+    <string name="firstrun_instruction_header"><![CDATA[<b>Instructions</b>]]></string>
+    <string name="firstrun_instructions">Use one of the supported applications to fill in a password as you usually would. When we sniff it, we\'ll post a notification</string>
+    <string name="firstrun_password_not_stored"><![CDATA[We do <b>NOT</b> store the passwords or send them anywhere; this app does not even have the Internet permission. The only place they are used is in the notification when they are sniffed]]></string>
+    <string name="firstrun_about_vulnerability"><![CDATA[The clipboard vulnerability is well known in the security community. The paper that inspired this proof of concept can be found at <a href="http://fc13.ifca.ai/proc/4–2.pdf">http://fc13.ifca.ai/proc/4–2.pdf</a>]]></string>
+    <string name="firstrun_source_header"><![CDATA[<b>Source</b>]]></string>
+    <string name="firstrun_source"><![CDATA[<a href=https://github.com/activems/clipcaster>https://github.com/activems/clipcaster</a>]]></string>
+    <string name="firstrun_title">About ClipCaster</string>
 </resources>

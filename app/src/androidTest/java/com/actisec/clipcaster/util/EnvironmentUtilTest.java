@@ -27,23 +27,20 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.actisec.clipcaster.parser;
+package com.actisec.clipcaster.util;
 
-import android.content.Context;
+import android.test.AndroidTestCase;
+import android.util.Log;
 
-import com.actisec.clipcaster.CredHandler;
+import java.util.List;
 
-/**
- * Created by xiao on 11/11/14.
- */
-public abstract class AbstractClipParser implements ClipParser {
-    @Override
-    public void onClip(Context context, CredHandler handler, String contents) {
-        ScrapedCredentials creds = getCreds(context, contents);
-        if(creds != null) {
-            handler.handleCreds(creds);
-        }
+public class EnvironmentUtilTest extends AndroidTestCase {
+
+    public void testGetRunningProcesses() throws Exception {
+        List<String> runningProcesses = EnvironmentUtil.getRunningProcesses(getContext());
+        assertNotNull(runningProcesses);
+        assertFalse(runningProcesses.isEmpty());
+        Log.d("Test", "Processes: { " + runningProcesses.toString() + " }");
+        assertTrue(runningProcesses.contains(getContext().getPackageName()));
     }
-
-    abstract ScrapedCredentials getCreds(Context context, String contents);
 }

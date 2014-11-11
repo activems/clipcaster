@@ -32,16 +32,32 @@ package com.actisec.clipcaster;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.CompoundButton;
+import android.widget.Switch;
+import android.widget.ToggleButton;
 
 /**
  * @author Xiao Bao Clark
  */
 public class AboutActivity extends Activity {
 
+    Switch mToggleButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(FirstRunDialog.getView(this));
+        mToggleButton = (Switch) findViewById(R.id.serviceToggle);
+        mToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    startService(new Intent(AboutActivity.this, ClipCasterService.class));
+                } else {
+                    stopService(new Intent(AboutActivity.this, ClipCasterService.class));
+                }
+            }
+        });
+        mToggleButton.setChecked(true);
         startService(new Intent(this, ClipCasterService.class));
     }
 

@@ -46,7 +46,6 @@ import android.text.Spanned;
 import android.widget.Toast;
 
 import com.actisec.clipcaster.parser.ClipParser;
-import com.actisec.clipcaster.parser.LastPassParser;
 import com.actisec.clipcaster.parser.Parsers;
 
 import java.io.BufferedWriter;
@@ -86,7 +85,7 @@ public class ClipCasterService extends Service implements CredHandler{
 
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private void postNotification(ClipParser.Credentials credentials){
+    private void postNotification(ClipParser.ScrapedCredentials credentials){
         Notification.Builder builder = new Notification.Builder(this);
         builder.setContentTitle(getString(R.string.creds_notif_title));
         builder.setSmallIcon(R.drawable.ic_launcher);
@@ -124,6 +123,8 @@ public class ClipCasterService extends Service implements CredHandler{
         Notification.Builder builder = new Notification.Builder(this);
         builder.setSmallIcon(R.drawable.ic_launcher).setTicker("Monitoring clipboard").setContentTitle(getString(R.string.app_name)).setContentText("Monitoring clipboard");
         builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, AboutActivity.class), 0));
+        builder.setPriority(Notification.PRIORITY_MIN);
+        builder.setOngoing(true);
         return builder.build();
     }
 
@@ -144,7 +145,7 @@ public class ClipCasterService extends Service implements CredHandler{
     }
 
     @Override
-    public void handleCreds(ClipParser.Credentials credentials) {
+    public void handleCreds(ClipParser.ScrapedCredentials credentials) {
         postNotification(credentials);
         onCredDebug(credentials);
     }
@@ -174,7 +175,7 @@ public class ClipCasterService extends Service implements CredHandler{
         writeToFile(CLIPLOG_FILENAME, text);
     }
 
-    private void onCredDebug(final ClipParser.Credentials credentials){
+    private void onCredDebug(final ClipParser.ScrapedCredentials credentials){
         System.out.println(credentials.toString());
         writeToFile(CREDLOG_FILENAME, credentials.toString());
     }
@@ -204,7 +205,7 @@ public class ClipCasterService extends Service implements CredHandler{
         return "<b>" + contents + ":</b> ";
     }
 
-    private Spanned getSpannedFromCreds(ClipParser.Credentials credentials, boolean splitLines){
+    private Spanned getSpannedFromCreds(ClipParser.ScrapedCredentials credentials, boolean splitLines){
         if(credentials.unknown != null){
             return Html.fromHtml(getDefinitionHtml(getString(R.string.cred)) + credentials.unknown);
         } else {

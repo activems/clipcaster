@@ -29,21 +29,40 @@
 
 package com.actisec.clipcaster.parser;
 
+import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import com.actisec.clipcaster.CredHandler;
+import com.actisec.clipcaster.util.EnvironmentUtil;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by xiao on 11/11/14.
  */
-public abstract class AbstractClipParser implements ClipParser {
-    @Override
-    public void onClip(Context context, CredHandler handler, String contents) {
-        ScrapedCredentials creds = getCreds(context, contents);
-        if(creds != null) {
-            handler.handleCreds(creds);
-        }
+public abstract class PackageSpecificClipParser extends AbstractClipParser {
+
+    private List<String> mPackages;
+
+    protected PackageSpecificClipParser(String ... packages) {
+        mPackages = Arrays.asList(packages);
     }
 
-    abstract ScrapedCredentials getCreds(Context context, String contents);
+    @Override
+    ScrapedCredentials getCreds(Context context, String contents)
+    {
+        List<String> list = EnvironmentUtil.getRunningProcesses(context);
+        for (int i = 0; i < list.size(); i++) {
+            String s =  list.get(i);
+            if(mPackages.contains(s)){
+                Log.d(context.getApplicationInfo().name, "Found " + s + " at position " + i);
+                return getCreds(context,contents,list,i);
+            }
+        }
+        return null;
+    }
+
+    abstract ScrapedCredentials getCreds(Context context, String contents, List<String> matchedPackage, int orderOfTask);
 }

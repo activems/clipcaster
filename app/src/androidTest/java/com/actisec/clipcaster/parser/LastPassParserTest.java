@@ -37,8 +37,8 @@ public class LastPassParserTest extends AndroidTestCase {
     private String formatUserPassToJscript(String encodedUser, String encodedPass) {
         return "(atob('" + encodedUser + "'))))." + "(atob('" + encodedPass + "'))))";
     }
-    private ClipParser.Credentials innerCredTest(String content) throws Throwable{
-        final ClipParser.Credentials creds = mParser.getCreds(getContext(), content);
+    private ClipParser.ScrapedCredentials innerCredTest(String content) throws Throwable{
+        final ClipParser.ScrapedCredentials creds = mParser.getCreds(getContext(), content);
         assertNotNull(creds);
         assertNotNull(creds.user);
         assertNotNull(creds.pass);
@@ -57,7 +57,7 @@ public class LastPassParserTest extends AndroidTestCase {
     }
 
     public void testCredGetFullSample() throws Throwable{
-        ClipParser.Credentials credentials =  innerCredTest(FULL_SAMPLE);
+        ClipParser.ScrapedCredentials credentials =  innerCredTest(FULL_SAMPLE);
         assertEquals(credentials.pass,"p4ssw0rd");
         assertEquals(credentials.user,"user@example.com");
 

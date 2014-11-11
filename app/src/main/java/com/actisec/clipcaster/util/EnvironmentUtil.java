@@ -27,23 +27,33 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.actisec.clipcaster.parser;
+package com.actisec.clipcaster.util;
 
+import android.app.ActivityManager;
 import android.content.Context;
-
-import com.actisec.clipcaster.CredHandler;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by xiao on 11/11/14.
  */
-public abstract class AbstractClipParser implements ClipParser {
-    @Override
-    public void onClip(Context context, CredHandler handler, String contents) {
-        ScrapedCredentials creds = getCreds(context, contents);
-        if(creds != null) {
-            handler.handleCreds(creds);
-        }
-    }
+public class EnvironmentUtil {
 
-    abstract ScrapedCredentials getCreds(Context context, String contents);
+    private EnvironmentUtil() {}
+
+
+    public static List<String> getRunningProcesses(Context context){
+        List<String> result = new ArrayList<String>();
+        /*
+         * The docs say "The list ordering is not specified". In practice we find it to be
+         * ordered by most recently used, or maybe start times
+         *
+         * Does not require permissions
+         */
+        List<ActivityManager.RunningAppProcessInfo> runningAppProcesses = ((ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE)).getRunningAppProcesses();
+        for(ActivityManager.RunningAppProcessInfo info : runningAppProcesses){
+            result.add(info.processName);
+        }
+        return result;
+    }
 }

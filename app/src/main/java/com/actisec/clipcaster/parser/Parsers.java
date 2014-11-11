@@ -45,5 +45,6 @@ public class Parsers {
 
     static {
         sClipParsers.add(new LastPassParser());
+        sClipParsers.add(new KeePassDroidParser());
     }
 }
