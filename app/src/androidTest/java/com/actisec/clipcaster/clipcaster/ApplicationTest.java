@@ -41,21 +41,5 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         super(Application.class);
     }
 
-    private Pair<String, String> innerCredTest(String encodedUser, String encodedPass) throws Throwable{
-
-        final Pair<String, String> creds = ClipCasterService.getCreds("(atob('" + encodedUser + "'))))." + "(atob('" + encodedPass + "'))))");
-        assertNotNull(creds);
-        assertFalse(creds.first.isEmpty());
-        assertFalse(creds.second.isEmpty());
-        return creds;
-    }
-    public void testCredGet() throws Throwable{
-        innerCredTest("czRmM3A0c3N3MHJk", "dW9hZmlyZWRyb2lk");
-    }
-
-
-    public void testCredGet2() throws Throwable{
-        innerCredTest("bGVhc3VyZS4=", "c3VyZS4=");
-    }
 
 }

