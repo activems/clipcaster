@@ -30,36 +30,20 @@
 package com.actisec.clipcaster.parser;
 
 import android.content.Context;
-import android.util.Base64;
 
 import com.actisec.clipcaster.CredHandler;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by xiao on 11/11/14.
  */
-public class LastPassParser extends AbstractClipParser {
-
+public abstract class AbstractClipParser implements ClipParser {
     @Override
-    Credentials getCreds(Context context, String contents) {
-        return sGetCreds(contents);
-    }
-
-    public static String REGEX = "atob\\(\\'([^']*)\\'\\)";
-    public static Credentials sGetCreds(String string){
-        Pattern p = Pattern.compile(REGEX);
-        //  get a matcher object
-        Matcher m = p.matcher(string);
-        List<String> creds = new ArrayList<String>(2);
-        while(m.find()) {
-            creds.add(m.group(1));
+    public void onClip(Context context, CredHandler handler, String contents) {
+        Credentials creds = getCreds(context, contents);
+        if(creds != null) {
+            handler.handleCreds(creds);
         }
-        if(creds.isEmpty()) return null;
-
-        return new Credentials(new String(Base64.decode(creds.get(0).getBytes(), 0)),new String(Base64.decode(creds.get(1).getBytes(), 0)));
     }
+
+    abstract Credentials getCreds(Context context, String contents);
 }

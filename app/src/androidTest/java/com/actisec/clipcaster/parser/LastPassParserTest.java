@@ -33,11 +33,12 @@ import android.test.AndroidTestCase;
 
 public class LastPassParserTest extends AndroidTestCase {
 
+    private LastPassParser mParser = new LastPassParser();
     private String formatUserPassToJscript(String encodedUser, String encodedPass) {
         return "(atob('" + encodedUser + "'))))." + "(atob('" + encodedPass + "'))))";
     }
     private ClipParser.Credentials innerCredTest(String content) throws Throwable{
-        final ClipParser.Credentials creds = LastPassParser.getCreds(content);
+        final ClipParser.Credentials creds = mParser.getCreds(getContext(), content);
         assertNotNull(creds);
         assertNotNull(creds.user);
         assertNotNull(creds.pass);
