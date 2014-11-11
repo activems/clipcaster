@@ -27,11 +27,10 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.actisec.clipcaster.clipcaster;
+package com.actisec.clipcaster;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
-import android.util.Pair;
 
 /**
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>

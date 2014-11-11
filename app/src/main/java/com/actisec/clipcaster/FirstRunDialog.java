@@ -27,11 +27,30 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.actisec.clipcaster.clipcaster;
+package com.actisec.clipcaster;
+
+import android.app.Activity;
+import android.text.Html;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
- * Created by xiao on 11/11/14.
+ * @author Xiao Bao Clark
  */
-public interface CredHandler {
-    void handleCreds(ClipParser.Credentials credentials);
+public class FirstRunDialog {
+    public static View getView(Activity activity){
+        View dialogView = View.inflate(activity,R.layout.dialog_first_run,null);
+        final ViewGroup viewGroup = (ViewGroup) dialogView;
+        for(int i = 0; i < viewGroup.getChildCount(); i++){
+            final View childView = viewGroup.getChildAt(i);
+            if(childView instanceof TextView){
+                final TextView curr = (TextView) childView;
+                curr.setText(Html.fromHtml(curr.getText().toString()));
+            }
+        }
+
+        return dialogView;
+    }
+
 }

@@ -27,7 +27,7 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.actisec.clipcaster.clipcaster;
+package com.actisec.clipcaster;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
@@ -43,8 +43,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Base64;
-import android.util.Pair;
 import android.widget.Toast;
 
 import java.io.BufferedWriter;
@@ -55,8 +53,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author Xiao Bao Clark
@@ -120,7 +116,7 @@ public class ClipCasterService extends Service implements CredHandler{
     @Override
     public void onCreate(){
         toast(this, "ClipCaster service starting", false);
-        startForeground(42,createOngoingNotification());
+        startForeground(42, createOngoingNotification());
         getManager().addPrimaryClipChangedListener(mListener);
     }
 

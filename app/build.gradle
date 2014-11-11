@@ -5,7 +5,7 @@ android {
     buildToolsVersion "20.0.0"
 
     defaultConfig {
-        applicationId "com.actisec.clipcaster.clipcaster"
+        applicationId "com.actisec.clipcaster"
         minSdkVersion 15
         targetSdkVersion 20
         versionCode 1

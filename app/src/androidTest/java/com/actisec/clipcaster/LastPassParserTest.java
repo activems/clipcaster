@@ -27,7 +27,7 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.actisec.clipcaster.clipcaster;
+package com.actisec.clipcaster;
 
 import android.test.AndroidTestCase;
 
