@@ -1,5 +1,18 @@
 apply plugin: 'com.android.application'
 
+group = 'com.actisec'
+
+
+def Properties versionProps = new Properties()
+def versionPropsFile = file('version.properties')
+if(versionPropsFile.exists())
+    versionProps.load(new FileInputStream(versionPropsFile))
+def code = (versionProps['VERSION_CODE'] ?: "0").toInteger() + 1
+versionProps['VERSION_CODE'] = code.toString()
+versionProps.store(versionPropsFile.newWriter(), null)
+
+version = '1.0.' + code
+
 android {
     compileSdkVersion 20
     buildToolsVersion "20.0.0"
@@ -8,8 +21,8 @@ android {
         applicationId "com.actisec.clipcaster"
         minSdkVersion 15
         targetSdkVersion 20
-        versionCode 1
-        versionName "1.0"
+        versionCode code
+        versionName version
     }
     buildTypes {
         release {
