@@ -58,7 +58,6 @@ import java.io.IOException;
 public class ClipboardHistoryActivity extends ListActivity {
 
     ArrayAdapter<String> mAdapter;
-    SharedPreferences mSharedPreferences = null;
 
 
     private void clearClips(){
@@ -112,18 +111,10 @@ public class ClipboardHistoryActivity extends ListActivity {
 
         TextView emptyText = (TextView) findViewById(android.R.id.empty);
         emptyText.setText(Html.fromHtml(getString(R.string.cliplist_empty)));
-        mSharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
-        if(mSharedPreferences.getBoolean("firstrun", true)){
-            showAboutDialog();
-        }
     }
     @Override
     protected void onResume() {
         super.onResume();
-
-        if (mSharedPreferences.getBoolean("firstrun", true)) {
-            mSharedPreferences.edit().putBoolean("firstrun", false).apply();
-        }
         mAdapter.notifyDataSetChanged();
     }
 
