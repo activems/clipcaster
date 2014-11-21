@@ -43,32 +43,32 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/firstrun_intro"
+        android:text="@string/about_intro"
         android:layout_marginBottom="@dimen/activity_vertical_margin"/>
 
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/firstrun_password_not_stored"
+        android:text="@string/about_password_not_stored"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/firstrun_about_vulnerability"
+        android:text="@string/about_vulnerability"
         android:layout_marginBottom="@dimen/activity_vertical_margin"/>
 
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/firstrun_instruction_header"/>
+        android:text="@string/about_instruction_header"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/firstrun_instructions"
+        android:text="@string/about_instructions"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginBottom="@dimen/activity_vertical_margin"/>
 
@@ -76,7 +76,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/firstrun_supported_apps_header"/>
+        android:text="@string/about_supported_apps_header"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -92,11 +92,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/firstrun_source_header"/>
+        android:text="@string/about_source_header"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/firstrun_source"
+        android:text="@string/about_source"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginBottom="@dimen/activity_vertical_margin"/>
 

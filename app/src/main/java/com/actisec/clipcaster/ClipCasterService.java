@@ -94,7 +94,7 @@ public class ClipCasterService extends Service implements CredHandler{
         Spanned contentTextBig = getSpannedFromCreds(credentials, true);
 
         builder.setContentText(contentText);
-        builder.setContentIntent(PendingIntent.getActivity(this, 0,new Intent(this, MyActivity.class),0));
+        builder.setContentIntent(PendingIntent.getActivity(this, 0,new Intent(this, ClipboardHistoryActivity.class),0));
         builder.setTicker(contentText);
 
         builder.setStyle(new Notification.BigTextStyle().bigText(contentTextBig));

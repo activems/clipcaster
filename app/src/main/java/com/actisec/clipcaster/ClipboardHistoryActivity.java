@@ -40,8 +40,11 @@ import android.os.Bundle;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -51,9 +54,11 @@ import java.io.IOException;
 /**
  * @author Xiao Bao Clark
  */
-public class MyActivity extends ListActivity {
+public class ClipboardHistoryActivity extends ListActivity {
 
     ArrayAdapter<String> mAdapter;
+    SharedPreferences mSharedPreferences = null;
+
 
     private void clearClips(){
             mAdapter.clear();
@@ -62,8 +67,8 @@ public class MyActivity extends ListActivity {
     protected void showAboutDialog(){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.firstrun_title));
-        builder.setView(FirstRunDialog.getView(this));
+        builder.setTitle(getString(R.string.about_title));
+        builder.setView(AboutTextHelper.getView(this));
         builder.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(final DialogInterface dialog, final int which) {
@@ -83,23 +88,27 @@ public class MyActivity extends ListActivity {
 
         setListAdapter(mAdapter);
 
+        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                getManager().setText(mAdapter.getItem(position));
+                Toast.makeText(ClipboardHistoryActivity.this, "Copied to clipboard", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
         TextView emptyText = (TextView) findViewById(android.R.id.empty);
         emptyText.setText(Html.fromHtml(getString(R.string.cliplist_empty)));
-        prefs = getSharedPreferences("com.mycompany.myAppName", MODE_PRIVATE);
-        if(prefs.getBoolean("firstrun", true)){
+        mSharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+        if(mSharedPreferences.getBoolean("firstrun", true)){
             showAboutDialog();
         }
     }
-    SharedPreferences prefs = null;
-
     @Override
     protected void onResume() {
         super.onResume();
 
-        if (prefs.getBoolean("firstrun", true)) {
-            // Do first run stuff here then set 'firstrun' as false
-            // using the following line to edit/commit prefs
-            prefs.edit().putBoolean("firstrun", false).apply();
+        if (mSharedPreferences.getBoolean("firstrun", true)) {
+            mSharedPreferences.edit().putBoolean("firstrun", false).apply();
         }
         mAdapter.notifyDataSetChanged();
     }
@@ -107,7 +116,7 @@ public class MyActivity extends ListActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.my, menu);
+        getMenuInflater().inflate(R.menu.clipboard_history, menu);
         return true;
     }
 

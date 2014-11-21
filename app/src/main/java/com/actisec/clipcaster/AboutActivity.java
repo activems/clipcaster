@@ -34,7 +34,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.CompoundButton;
 import android.widget.Switch;
-import android.widget.ToggleButton;
 
 /**
  * @author Xiao Bao Clark
@@ -45,7 +44,7 @@ public class AboutActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(FirstRunDialog.getView(this));
+        setContentView(AboutTextHelper.getView(this));
         mToggleButton = (Switch) findViewById(R.id.serviceToggle);
         mToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

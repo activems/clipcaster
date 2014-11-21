@@ -30,20 +30,17 @@
 package com.actisec.clipcaster;
 
 import android.app.Activity;
-import android.content.Context;
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 /**
  * @author Xiao Bao Clark
  */
-public class FirstRunDialog {
+public class AboutTextHelper {
     public static View getView(Activity activity){
-        View dialogView = View.inflate(activity,R.layout.dialog_first_run,null);
+        View dialogView = View.inflate(activity,R.layout.about_text,null);
         final ViewGroup viewGroup = (ViewGroup) dialogView;
         makeHtml(viewGroup);
 
