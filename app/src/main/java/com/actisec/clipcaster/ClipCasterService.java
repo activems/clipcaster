@@ -44,6 +44,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.actisec.clipcaster.parser.ClipParser;
