@@ -7,13 +7,23 @@ ClipCaster is an open source proof of concept app that shows how easily any inst
 
 Screenshots
 -----------
+LastPass presents credential options when it detects a fillable page
 
-![](https://raw.githubusercontent.com/activems/clipcaster/master/screenshots/ClipCasterFB_LP_Dialog_half.png) ![](https://raw.githubusercontent.com/activems/clipcaster/master/screenshots/ClipCasterFB_creds_ticker_half.png) ![](https://raw.githubusercontent.com/activems/clipcaster/master/screenshots/ClipCasterFB_creds_notif_half.png)
+![](https://raw.githubusercontent.com/activems/clipcaster/master/screenshots/ClipCasterFB_LP_Dialog_half.png)
+
+Once credentials are chosen, we have them (see notification bar)
+
+![](https://raw.githubusercontent.com/activems/clipcaster/master/screenshots/ClipCasterFB_creds_ticker_half.png)
+
+We post them as a notification
+
+![](https://raw.githubusercontent.com/activems/clipcaster/master/screenshots/ClipCasterFB_creds_notif_half.png)
 
 What
 ----
 
 ClipCaster is an implementation of the concept in "Hey, You, Get Off of My Clipboard - On How Usability Trumps Security in Android Password Managers" (http://fc13.ifca.ai/proc/4-2.pdf), specifically for the LastPass/Chrome combination.
+
 
 Scope of ClipCaster
 ---------------------------
@@ -22,7 +32,9 @@ Finds credentials when using:
     LastPass 'fill-in' feature (Android version at least 4.3)
     KeePassDroid
 
-but most, if not all, other password managers are vulnerable to this technique. See 'Scope of Vulnerability' below. We chose LastPass as A) we were using it personally and B) the fill-in feature we targeted doesn't tell the user it uses the clipboard internally.
+but most, if not all, other password managers are vulnerable to this technique. See 'Scope of Vulnerability' below.
+
+We chose LastPass as A) we were using it personally and B) the fill-in feature we targeted doesn't tell the user it uses the clipboard internally.
 
 How
 ---
