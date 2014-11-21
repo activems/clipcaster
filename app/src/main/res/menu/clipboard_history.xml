@@ -35,10 +35,5 @@
           android:orderInCategory="100"
           android:icon="@android:drawable/ic_menu_delete"
           android:showAsAction="ifRoom" />
-    <item android:id="@+id/action_about"
-          android:title="@string/about"
-          android:orderInCategory="100"
-          android:icon="@android:drawable/ic_menu_help"
-          android:showAsAction="ifRoom" />
 
 </menu>

@@ -9,7 +9,12 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".ClipboardHistoryActivity"
-            android:label="@string/act_clipboard_title" >
+            android:label="@string/act_clipboard_title"
+            android:parentActivityName=".AboutActivity" >
+            <!-- Parent activity meta-data to support API level 7+ -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".AboutActivity" />>
         </activity>
 
         <activity

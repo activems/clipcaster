@@ -29,6 +29,7 @@
 
 package com.actisec.clipcaster;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.ClipboardManager;
@@ -61,7 +62,13 @@ public class ClipboardHistoryActivity extends ListActivity {
 
 
     private void clearClips(){
-            mAdapter.clear();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(ClipboardHistoryActivity.this, "Cleared ClipCaster logs", Toast.LENGTH_SHORT).show();
+            }
+        });
+        mAdapter.clear();
     }
 
     protected void showAboutDialog(){
@@ -77,6 +84,7 @@ public class ClipboardHistoryActivity extends ListActivity {
         });
         builder.show();
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +104,12 @@ public class ClipboardHistoryActivity extends ListActivity {
                 return true;
             }
         });
+
+        ActionBar actionBar = getActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         TextView emptyText = (TextView) findViewById(android.R.id.empty);
         emptyText.setText(Html.fromHtml(getString(R.string.cliplist_empty)));
         mSharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
@@ -130,12 +144,15 @@ public class ClipboardHistoryActivity extends ListActivity {
             clearClips();
             return true;
         }
-        if (id == R.id.action_about) {
-            showAboutDialog();
-            return true;
-        }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public Intent getParentActivityIntent() {
+        return new Intent(this, AboutActivity.class);
+    }
+
+
 
     private String getLog(final String name){
 
