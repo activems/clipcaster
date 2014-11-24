@@ -58,8 +58,8 @@ public class LastPassParserTest extends AndroidTestCase {
 
     public void testCredGetFullSample() throws Throwable{
         ClipParser.ScrapedCredentials credentials =  innerCredTest(FULL_SAMPLE);
-        assertEquals(credentials.pass,"p4ssw0rd");
-        assertEquals(credentials.user,"user@example.com");
+        assertEquals("p4ssw0rd", credentials.pass);
+        assertEquals("user@example.com",credentials.user);
 
     }
 

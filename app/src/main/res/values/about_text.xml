@@ -32,13 +32,6 @@
 
     <string name="about_intro">This app attempts to show how easily passwords autofilled using some password managers can be sniffed by malicious applications</string>
     <string name="about_supported_apps_header"><![CDATA[<b>Supported Apps</b>]]></string>
-    <string-array
-        name="about_supported_apps">
-        <item>LastPass: Chrome autofill</item>
-        <item>
-            KeePassDroid: Copying from notification (must have been recently opened)
-        </item>
-    </string-array>
     <string name="about_instruction_header"><![CDATA[<b>Instructions</b>]]></string>
     <string name="about_instructions">Use one of the supported applications to fill in a password as you usually would. When we sniff it, we\'ll post a notification</string>
     <string name="about_password_not_stored"><![CDATA[We do <b>NOT</b> store the passwords or send them anywhere; this app does not even have the Internet permission. The only place they are used is in the notification when they are sniffed]]></string>

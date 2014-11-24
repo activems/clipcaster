@@ -29,23 +29,42 @@
 
 package com.actisec.clipcaster.parser;
 
+import android.content.Context;
+import android.util.Base64;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by xiao on 11/11/14.
  */
-public class Parsers {
+public class RoboFormParser extends AbstractClipParser {
 
-    private static List<ClipParser> sClipParsers = new ArrayList<ClipParser>();
-
-    public static List<ClipParser> getClipParsers() {
-        return sClipParsers;
+    @Override
+    ScrapedCredentials getCreds(Context context, String contents) {
+        return sGetCreds(contents);
     }
 
-    static {
-        sClipParsers.add(new LastPassParser());
-        sClipParsers.add(new KeePassDroidParser());
-        sClipParsers.add(new RoboFormParser());
+    public static String REGEX = "var\\s*(?:login|pass)\\s*=\\s*\\'([^']*)\\'";
+
+    public static ScrapedCredentials sGetCreds(String string){
+        Pattern p = Pattern.compile(REGEX);
+
+        System.out.println(p.pattern());
+        //  get a matcher object
+        Matcher m = p.matcher(string);
+        List<String> creds = new ArrayList<String>(2);
+        while(m.find()) {
+            creds.add(m.group(1));
+        }
+        if(creds.isEmpty()) {
+            System.out.println("No matches");
+            return null;
+        }
+
+
+        return new ScrapedCredentials(creds.get(0),creds.get(1));
     }
 }
