@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2014 Xiao Bao Clark
+  ~ All rights reserved.
+  ~
+  ~ Redistribution and use in source and binary forms, with or without
+  ~ modification, are permitted provided that the following conditions are met:
+  ~
+  ~ 1. Redistributions of source code must retain the above copyright notice, this
+  ~    list of conditions and the following disclaimer.
+  ~ 2. Redistributions in binary form must reproduce the above copyright notice,
+  ~    this list of conditions and the following disclaimer in the documentation
+  ~    and/or other materials provided with the distribution.
+  ~
+  ~ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+  ~ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  ~ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  ~ DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+  ~ ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  ~ (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  ~ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+  ~ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  ~ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  ~ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  ~
+  ~ The views and conclusions contained in the software and documentation are those
+  ~ of the authors and should not be interpreted as representing official policies,
+  ~ either expressed or implied, of the FreeBSD Project.
+  -->
+
+<resources>
+
+    <string name="app_name">ClipCaster</string>
+    <string name="hello_world">Ciao mondo!</string>
+    <string name="action_settings">Impostazioni</string>
+
+    <string name="act_clipboard_title">Storico Clipboard</string>
+    <string name="clear">Pulisci</string>
+    <string name="about">Info</string>
+    <string name="creds_notif_title">Credenziali Catturate</string>
+    <string name="cliplist_empty">Storico clipboard vuota</string>
+    <string name="user">User</string>
+    <string name="pass">Pass</string>
+    <string name="cred">Cred</string>
+
+    <string name="service_start_toggle_on">Servizio in esecuzione</string>
+    <string name="service_start_toggle_off">Servizio interrotto</string>
+
+
+    <string name="creds_notif_content_user_pass">&lt;b>User&lt;/b>: %1$s, &lt;b>Pass&lt;/b>: %2$s</string>
+    <string name="creds_notif_content_big">&lt;b>User&lt;/b>: %1$s&lt;br/>&lt;b>Pass&lt;/b>: %2$s</string>
+    <string name="service_toggle_pretext">&lt;b>Monitoraggio: &lt;/b></string>
+    <string name="history">Storico</string>
+
+</resources>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2014 Xiao Bao Clark
+  ~ All rights reserved.
+  ~
+  ~ Redistribution and use in source and binary forms, with or without
+  ~ modification, are permitted provided that the following conditions are met:
+  ~
+  ~ 1. Redistributions of source code must retain the above copyright notice, this
+  ~    list of conditions and the following disclaimer.
+  ~ 2. Redistributions in binary form must reproduce the above copyright notice,
+  ~    this list of conditions and the following disclaimer in the documentation
+  ~    and/or other materials provided with the distribution.
+  ~
+  ~ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+  ~ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  ~ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  ~ DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+  ~ ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  ~ (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  ~ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+  ~ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  ~ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  ~ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  ~
+  ~ The views and conclusions contained in the software and documentation are those
+  ~ of the authors and should not be interpreted as representing official policies,
+  ~ either expressed or implied, of the FreeBSD Project.
+  -->
+
+<resources>
+
+    <string name="about_intro">Quest\'app è un software libero che tenta di mostrare la facilità con cui qualsiasi applicazione maliziosa è tecnicamente in grado di catturare nome utente e password auto-inseriti da alcuni password manager</string>
+    <string name="about_supported_apps_header"><![CDATA[<b>App Supportate</b>]]></string>
+    <string name="about_instruction_header"><![CDATA[<b>Istruzioni</b>]]></string>
+    <string name="about_instructions">Usa una delle applicazioni supportate per inserire la password come faresti normalmente. Riceverai una notifica per dirti se è stata catturata</string>
+    <string name="about_password_not_stored"><![CDATA[Noi <b>NON</b> salviamo nessuna di queste informazioni e non le inviamo da nessuna parte; quest\'app non ha neanche i permessi per l\'accesso ad Internet. L\'unico posto in cui queste informazioni sono mostrate è nella barra delle notifiche, solo quando sono catturate]]></string>
+    <string name="about_vulnerability"><![CDATA[La vulnerabilità della clipboard è un tema ben conosciuto nel mondo della sicurezza informatica. Il documento che ha ispirato questo "proof of concept" si può trovare su <a href="http://fc13.ifca.ai/proc/4–2.pdf">http://fc13.ifca.ai/proc/4–2.pdf</a>]]></string>
+    <string name="about_source_header"><![CDATA[<b>Codice sorgente</b>]]></string>
+    <string name="about_source"><![CDATA[<a href=https://github.com/activems/clipcaster>https://github.com/activems/clipcaster</a>]]></string>
+    <string name="about_title">Info su ClipCaster</string>
+</resources>
