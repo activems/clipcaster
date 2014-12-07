@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 group = 'com.actisec'
 
-version = '1.0.56'
+version = '1.0.57'
 
 android {
     compileSdkVersion 20

@@ -1,55 +1,72 @@
 ClipCaster is an open source proof of concept app that shows how easily any installed app can read passwords when they're used from password management applications.
+
 Ars Technica article: http://ars.to/1vwcmT0
+
 Finds credentials when using LastPass' and RoboForm's 'fill-in' feature for Chrome (Android version at least 4.3) and KeePassDroid
+
 BUT most, if not all, other password managers are vulnerable to this technique. See 'Scope of Vulnerability' below.
+
 We do NOT store the passwords or send them anywhere; this app does not even have the Internet permission. The only place they are used is in the notification when they are sniffed.
----------------------------
+
+===
 Scope of ClipCaster
----------------------------
+===
+
 Currently the three use cases demonstrated by ClipCaster are the LastPass applications filling out fields in Chrome, and KeePassDroid's copying notification. RoboForm filling out Chrome has also been added (thanks to Robert for the tipoff!)
+
 ClipCaster also has a clipboard history, collected while the app is switched on. Just hit the 'history' icon on the main app. With this you can see what any app is doing with the clipboard.
 
--------------------------------
+
+===
 Scope of vulnerability
--------------------------------
+===
+
 For all password managers: if it requires you pasting your credentials, it is vulnerable. If the manager has a built-in browser or keyboard, using that feature will almost definitely avoid the vulnerability. If the manager doesn't, type passwords manually to avoid the vulnerability
+
 For LastPass: Even though it doesn't mention it, the 'fill-in' feature (the one that pops up with credential choices, as in the screenshots) uses the clipboard and so is vulnerable.The alternatives are: the LastPass keyboard (or input method as they call it), the built-in browser, or using a mobile browser with a browser-specific LastPass extension such as Dolphin.
+
 If you're unsure whether a password manager's feature is vulnerable, ask the developers of the password manager. Alternatively, email x.clark@actisec.com and we will attempt to check it out.
 
-------
-How
-------
-We monitor the clipboard and heuristically determine if it contains a password or not. This isn't completely fool-proof, but it demonstrates the vulnerability. A malicious application could simply get a dump of all the clipboard changes and work it out manually.
 
-----------------
+===
+How
+===
+
+We monitor the clipboard and heuristically determine if it contains a password or not. This isn't completely fool-proof, but it demonstrates the vulnerability. A malicious application could simply get a dump of all the clipboard changes and work it out manually. 
+
+
+===
 Background
-----------------
+===
+
 A common problem in today's technological landscape is needing to remember a different password for each service. Password managers provide a solution to this problem, by creating a repository of different passwords and locking them with a single master password.
+
 They are often cumbersome to use, so convenience applications facilitate (to varying degrees) the user retrieving and using the stored passwords.
+
 On Android, this poses a problem because the only way to do this in a generic manner is to use the clipboard. The clipboard is visible to any installed application, no permissions required.
 
-------
+
+===
 Why
-------
+===
+
 Hopefully this app will show people that by using these applications they are trading their security for usability. This decision is every individual person's to make, and it should be an informed one.
 
-----------------
+
+===
 Permissions
-----------------
+===
+
 No permissions required
 
----------
-Source
----------
+===
+Source & Acknowledgements
+===
+
 https://github.com/activems/clipcaster
 
---------------------------
-Acknowledgements
---------------------------
 This project is an independent implementation of the concept in "Hey, You, Get Off of My Clipboard - On How Usability Trumps Security in Android Password Managers" (http://fc13.ifca.ai/proc/4-2.pdf).
-A special thanks to the alpha testers Arturo Blas-Jiménez, Daniel Resnick and Andrew WIlson.
 
--------
-Bugs
--------
-If any bugs are found, please put a description of them plus your version of Android on the issues page of the GitHub repo (https://github.com/activems/clipcaster/issues) or email x.clark@actisec.com
+A special thanks to Arturo Blas-Jiménez, Daniel Resnick and Andrew WIlson for testing and to Valerio Bozzolan for the Italian localisation.
+
+If any bugs are found, please put a description of them plus your  version of Android on the issues page of the GitHub repo (https://github.com/activems/clipcaster/issues) or email x.clark@actisec.com
