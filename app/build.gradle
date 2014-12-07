@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 group = 'com.actisec'
-
-version = '1.0.57'
+def code = 57
+version = '1.0.' + code
 
 android {
     compileSdkVersion 20
@@ -12,6 +12,7 @@ android {
         applicationId "com.actisec.clipcaster"
         minSdkVersion 16
         targetSdkVersion 20
+        versionCode = code
         versionName version
     }
     buildTypes {
