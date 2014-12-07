@@ -51,5 +51,8 @@
     <string name="creds_notif_content_big">&lt;b>User&lt;/b>: %1$s&lt;br/>&lt;b>Pass&lt;/b>: %2$s</string>
     <string name="service_toggle_pretext">&lt;b>Monitoring: &lt;/b></string>
     <string name="history">History</string>
+    <string name="case_lastpass">LastPass: Chrome autofill</string>
+    <string name="case_roboform">RoboForm: Chrome autofill</string>
+    <string name="case_keepassdroid">KeePassDroid: Copying from recent notification</string>
 
 </resources>
