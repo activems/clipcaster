@@ -29,36 +29,15 @@
 
 package com.actisec.clipcaster;
 
-import android.annotation.TargetApi;
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.os.Debug;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.SystemClock;
-import android.text.Html;
-import android.text.Spanned;
-import android.util.Log;
 import android.widget.Toast;
-
-import com.actisec.clipcaster.parser.ClipParser;
-import com.actisec.clipcaster.parser.Parsers;
-
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
 
 /**

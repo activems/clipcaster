@@ -32,9 +32,6 @@ package com.actisec.clipcaster.parser;
 import android.content.Context;
 
 import com.actisec.clipcaster.CredHandler;
-import com.actisec.clipcaster.Source;
-
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Created by xiao on 11/11/14.
