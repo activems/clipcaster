@@ -31,6 +31,8 @@ package com.actisec.clipcaster.parser;
 
 import android.content.Context;
 
+import com.actisec.clipcaster.ScrapedCredentials;
+
 import java.util.List;
 
 /**
@@ -52,7 +54,7 @@ public class KeePassDroidParser extends PackageSpecificClipParser {
 
         ScrapedCredentials result = new ScrapedCredentials();
         result.unknown = contents;
-        result.sourcePackage = PACKAGE_NAME;
+        result.source = PACKAGE_NAME;
         switch (orderOfTask){
             case 0:
                 break;

@@ -31,14 +31,16 @@ package com.actisec.clipcaster.parser;
 
 import android.test.AndroidTestCase;
 
+import com.actisec.clipcaster.ScrapedCredentials;
+
 public class LastPassParserTest extends AndroidTestCase {
 
     private LastPassParser mParser = new LastPassParser();
     private String formatUserPassToJscript(String encodedUser, String encodedPass) {
         return "(atob('" + encodedUser + "'))))." + "(atob('" + encodedPass + "'))))";
     }
-    private ClipParser.ScrapedCredentials innerCredTest(String content) throws Throwable{
-        final ClipParser.ScrapedCredentials creds = mParser.getCreds(getContext(), content);
+    private ScrapedCredentials innerCredTest(String content) throws Throwable{
+        final ScrapedCredentials creds = mParser.getCreds(getContext(), content);
         assertNotNull(creds);
         assertNotNull(creds.user);
         assertNotNull(creds.pass);
@@ -57,7 +59,7 @@ public class LastPassParserTest extends AndroidTestCase {
     }
 
     public void testCredGetFullSample() throws Throwable{
-        ClipParser.ScrapedCredentials credentials =  innerCredTest(FULL_SAMPLE);
+        ScrapedCredentials credentials =  innerCredTest(FULL_SAMPLE);
         assertEquals("p4ssw0rd", credentials.pass);
         assertEquals("user@example.com",credentials.user);
 

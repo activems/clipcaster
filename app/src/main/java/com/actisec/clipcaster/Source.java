@@ -27,41 +27,36 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.actisec.clipcaster.parser;
-
-import android.content.Context;
-import android.util.Log;
-
-import com.actisec.clipcaster.ScrapedCredentials;
-import com.actisec.clipcaster.util.EnvironmentUtil;
-
-import java.util.Arrays;
-import java.util.List;
+package com.actisec.clipcaster;
 
 /**
- * Created by xiao on 11/11/14.
- */
-public abstract class PackageSpecificClipParser extends AbstractClipParser {
+* Created by xiao on 16/12/14.
+*/
+public class Source {
+    public String javascriptProgram = null;
+    public long timeOfNotification = -1;
 
-    private List<String> mPackages;
+    public Source() {
+    }
 
-    protected PackageSpecificClipParser(String ... packages) {
-        mPackages = Arrays.asList(packages);
+    public Source(String javascriptProgram, long timeOfNotification) {
+        this.javascriptProgram = javascriptProgram;
+        this.timeOfNotification = timeOfNotification;
+    }
+
+    public Source(String javascriptProgram) {
+        this.javascriptProgram = javascriptProgram;
+        this.timeOfNotification = System.currentTimeMillis();
     }
 
     @Override
-    ScrapedCredentials getCreds(Context context, String contents)
-    {
-        List<String> list = EnvironmentUtil.getRunningProcesses(context);
-        for (int i = 0; i < list.size(); i++) {
-            String s =  list.get(i);
-            if(mPackages.contains(s)){
-                Log.d(context.getApplicationInfo().name, "Found " + s + " at position " + i);
-                return getCreds(context,contents,list,i);
-            }
-        }
-        return null;
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Source{").append('\n');
+        sb.append("javascriptProgram='").append(javascriptProgram).append('\'')
+                .append('\n');
+        sb.append(", timeOfNotification=").append(timeOfNotification)
+                .append('\n');
+        sb.append('}');
+        return sb.toString();
     }
-
-    abstract ScrapedCredentials getCreds(Context context, String contents, List<String> matchedPackage, int orderOfTask);
 }

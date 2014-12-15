@@ -30,7 +30,8 @@
 package com.actisec.clipcaster.parser;
 
 import android.content.Context;
-import android.util.Base64;
+
+import com.actisec.clipcaster.ScrapedCredentials;
 
 import java.util.ArrayList;
 import java.util.List;

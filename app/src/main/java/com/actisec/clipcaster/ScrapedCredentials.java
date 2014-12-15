@@ -27,41 +27,60 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.actisec.clipcaster.parser;
+package com.actisec.clipcaster;
 
-import android.content.Context;
-import android.util.Log;
-
-import com.actisec.clipcaster.ScrapedCredentials;
-import com.actisec.clipcaster.util.EnvironmentUtil;
-
-import java.util.Arrays;
-import java.util.List;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * Created by xiao on 11/11/14.
+ * Scraped credentials.
+ *
+ * Either user and/or pass is not null, OR
+ * unknown is not null
  */
-public abstract class PackageSpecificClipParser extends AbstractClipParser {
+public class ScrapedCredentials {
+    @Nullable
+    public String user;
+    @Nullable
+    public String pass;
+    @Nullable
+    public String unknown;
+    @Nullable
+    public String source;
 
-    private List<String> mPackages;
+    public boolean isCertain = true;
 
-    protected PackageSpecificClipParser(String ... packages) {
-        mPackages = Arrays.asList(packages);
+    public ScrapedCredentials() {
+
     }
 
     @Override
-    ScrapedCredentials getCreds(Context context, String contents)
-    {
-        List<String> list = EnvironmentUtil.getRunningProcesses(context);
-        for (int i = 0; i < list.size(); i++) {
-            String s =  list.get(i);
-            if(mPackages.contains(s)){
-                Log.d(context.getApplicationInfo().name, "Found " + s + " at position " + i);
-                return getCreds(context,contents,list,i);
-            }
-        }
-        return null;
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ScrapedCredentials{").append('\n');
+        sb.append("user='").append(user).append('\'')
+                .append('\n');
+        sb.append(", pass='").append(pass).append('\'')
+                .append('\n');
+        sb.append(", unknown='").append(unknown).append('\'')
+                .append('\n');
+        sb.append(", source='").append(source).append('\'')
+                .append('\n');
+        sb.append(", isCertain=").append(isCertain)
+                .append('\n');
+        sb.append('}');
+        return sb.toString();
     }
 
-    abstract ScrapedCredentials getCreds(Context context, String contents, List<String> matchedPackage, int orderOfTask);
+    public ScrapedCredentials(String user, String pass) {
+        this.user = user;
+        this.pass = pass;
+    }
+
+
+    public ScrapedCredentials(String user, String pass, String unknown, String source) {
+        this.user = user;
+        this.pass = pass;
+        this.unknown = unknown;
+        this.source = source;
+    }
+
 }

@@ -91,7 +91,7 @@ public class ClipboardHistoryActivity extends ListActivity {
         startService(new Intent(this, ClipCasterService.class));
 
         mAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, ClipCasterService.mClips);
+                android.R.layout.simple_list_item_1, GlobalClipParser.mClips);
 
         setListAdapter(mAdapter);
 
