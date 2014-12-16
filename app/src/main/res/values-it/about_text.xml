@@ -30,11 +30,11 @@
 
 <resources>
 
-    <string name="about_intro">Quest\'app è un software libero che tenta di mostrare la facilità con cui qualsiasi applicazione maliziosa è tecnicamente in grado di catturare nome utente e password auto-inseriti da alcuni password manager</string>
+    <string name="about_intro">Quest\'app è un software libero che vuole dimostrare la facilità con cui qualsiasi applicazione maliziosa è tecnicamente in grado di catturare nome utente e password auto-inseriti da alcuni password manager</string>
     <string name="about_supported_apps_header"><![CDATA[<b>App Supportate</b>]]></string>
     <string name="about_instruction_header"><![CDATA[<b>Istruzioni</b>]]></string>
     <string name="about_instructions">Usa una delle applicazioni supportate per inserire la password come faresti normalmente. Riceverai una notifica per dirti se è stata catturata</string>
-    <string name="about_password_not_stored"><![CDATA[Noi <b>NON</b> salviamo nessuna di queste informazioni e non le inviamo da nessuna parte; quest\'app non ha neanche i permessi per l\'accesso ad Internet. L\'unico posto in cui queste informazioni sono mostrate è nella barra delle notifiche, solo quando sono catturate]]></string>
+    <string name="about_password_not_stored"><![CDATA[Noi <b>NON</b> salviamo nessuna di queste informazioni e non le inviamo da nessuna parte; quest\'app non ha neanche i permessi per l\'accesso ad Internet. L\'unico posto in cui queste informazioni sono mostrate è nella barra delle notifiche, e solo quando sono catturate]]></string>
     <string name="about_vulnerability"><![CDATA[La vulnerabilità della clipboard è un tema ben conosciuto nel mondo della sicurezza informatica. Il documento che ha ispirato questo "proof of concept" si può trovare su <a href="http://fc13.ifca.ai/proc/4–2.pdf">http://fc13.ifca.ai/proc/4–2.pdf</a>]]></string>
     <string name="about_source_header"><![CDATA[<b>Codice sorgente</b>]]></string>
     <string name="about_source"><![CDATA[<a href=https://github.com/activems/clipcaster>https://github.com/activems/clipcaster</a>]]></string>
