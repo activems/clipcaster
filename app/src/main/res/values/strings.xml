@@ -54,5 +54,8 @@
     <string name="case_lastpass">LastPass: Chrome autofill</string>
     <string name="case_roboform">RoboForm: Chrome autofill</string>
     <string name="case_keepassdroid">KeePassDroid: Copying from recent notification</string>
+    <string name="scrapedlist_empty">No scraped data</string>
+    <string name="act_scraping_title">Scraped Data History</string>
+    <string name="scrapedhistory">Scraped Data</string>
 
 </resources>

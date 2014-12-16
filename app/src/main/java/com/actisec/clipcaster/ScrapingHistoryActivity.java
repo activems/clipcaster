@@ -30,11 +30,9 @@
 package com.actisec.clipcaster;
 
 import android.app.ActionBar;
-import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
@@ -54,16 +52,16 @@ import java.io.IOException;
 /**
  * @author Xiao Bao Clark
  */
-public class ClipboardHistoryActivity extends ListActivity {
+public class ScrapingHistoryActivity extends ListActivity {
 
-    ArrayAdapter<String> mAdapter;
+    ArrayAdapter<ScrapedData> mAdapter;
 
 
     private void clearClips(){
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(ClipboardHistoryActivity.this, "Cleared ClipCaster logs", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ScrapingHistoryActivity.this, "Cleared ClipCaster logs", Toast.LENGTH_SHORT).show();
             }
         });
         mAdapter.clear();
@@ -75,8 +73,8 @@ public class ClipboardHistoryActivity extends ListActivity {
         setContentView(R.layout.activity_my);
         startService(new Intent(this, ClipCasterService.class));
 
-        mAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, GlobalClipParser.mClips);
+        mAdapter = new ArrayAdapter<ScrapedData>(this,
+                android.R.layout.simple_list_item_1, GlobalClipParser.mData);
 
         setListAdapter(mAdapter);
 
@@ -85,9 +83,9 @@ public class ClipboardHistoryActivity extends ListActivity {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent dataIntent  = new Intent();
                 dataIntent.setAction(Intent.ACTION_SEND);
-                dataIntent.putExtra(Intent.EXTRA_TEXT, mAdapter.getItem(position));
+                dataIntent.putExtra(Intent.EXTRA_TEXT, mAdapter.getItem(position).toString());
                 dataIntent.setType("text/plain");
-                sendBroadcast(dataIntent);
+                startActivity(dataIntent);
                 return true;
             }
         });
@@ -98,7 +96,7 @@ public class ClipboardHistoryActivity extends ListActivity {
         }
 
         TextView emptyText = (TextView) findViewById(android.R.id.empty);
-        emptyText.setText(Html.fromHtml(getString(R.string.cliplist_empty)));
+        emptyText.setText(Html.fromHtml(getString(R.string.scrapedlist_empty)));
     }
     @Override
     protected void onResume() {
@@ -130,6 +128,5 @@ public class ClipboardHistoryActivity extends ListActivity {
     public Intent getParentActivityIntent() {
         return new Intent(this, AboutActivity.class);
     }
-
 
 }

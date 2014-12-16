@@ -79,6 +79,9 @@ public class AboutActivity extends Activity {
         if (id == R.id.action_history) {
             startActivity(new Intent(this, ClipboardHistoryActivity.class));
             return true;
+        } else if (id == R.id.action_scraped_history) {
+            startActivity(new Intent(this, ScrapingHistoryActivity.class));
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

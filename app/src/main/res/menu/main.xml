@@ -35,5 +35,10 @@
           android:orderInCategory="100"
           android:icon="@android:drawable/ic_menu_recent_history"
           android:showAsAction="ifRoom" />
+    <item android:id="@+id/action_scraped_history"
+          android:title="@string/scrapedhistory"
+          android:orderInCategory="100"
+          android:icon="@android:drawable/ic_menu_upload"
+          android:showAsAction="never" />
 
 </menu>

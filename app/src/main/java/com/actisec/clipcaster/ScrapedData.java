@@ -41,6 +41,17 @@ public class ScrapedData {
         this.source = source;
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ScrapedData{").append('\n');
+        sb.append("creds=").append(creds)
+                .append('\n');
+        sb.append(", source=").append(source)
+                .append('\n');
+        sb.append('}');
+        return sb.toString();
+    }
+
     public ScrapedData(ScrapedCredentials creds) {
         this.creds = creds;
     }

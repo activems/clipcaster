@@ -164,23 +164,9 @@ script: (function () {
         if (do_fill) {
             console.log('fill login form=' + (l_bf.id || l_bf.name));
             if (l_bte) {
-                var l_x = function (t, l, m) {
-                    var o = [];
-                    var b = '';
-                    var p = document.location.href.replace(/https?:\/\//, '').substring(0, l);
-                    p = l_s('' + l_f(m) + p);
-                    for (z = 1; z <= 255; z++) {
-                        o[String.fromCharCode(z)] = z;
-                    }
-                    for (j = z = 0; z < t.length; z++) {
-                        b += String.fromCharCode(o[t.substr(z, 1)] ^ o[p.substr(j, 1)]);
-                        j = (j < p.length) ? j + 1 : 0;
-                    }
-                    return decodeURIComponent(escape(b));
-                };
-                l_sfv(l_bte, l_x(atob('W01cCVUlA1AVCkIDAk8AC1g='), 61, 0));
+                l_sfv(l_bte, l_x(atob('QBYEQHQESFcIEgkAGlQNCA=='), 61, 4));
             }
-            l_sfv(l_bpe, l_x(atob('QldeA0BREUAWDEMC'), 61, 0));
+            l_sfv(l_bpe, l_x(atob('RVESQUNRQlI='), 61, 4));
         }
     } else {
         console.log('no form');
