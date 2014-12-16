@@ -1,5 +1,7 @@
 
-[ LastPass update: ClipCaster can no longer retrieve LastPass credentials. LastPass' fill-in is still vulnerable though. For an explanation of why, and how to verify it yourself (some knowledge of JavaScript required), see my blog post at https://blog.xbc.nz/2014/12/lastpass-attempt-at-client-side-android.html ]
+[ LastPass update: ClipCaster no longer automates the retrieval LastPass credentials. LastPass' fill-in is still vulnerable though. For an explanation of why, and how to verify it yourself (some knowledge of JavaScript required), see my blog post at https://blog.xbc.nz/2014/12/lastpass-attempt-at-client-side-android.html ]
+
+Now on F-Droid: https://f-droid.org/repository/browse/?fdfilter=clipcaster&fdid=com.actisec.clipcaster
 
 ClipCaster is an open source proof of concept app that shows how any installed app can read passwords when they're used from password management applications.
 
