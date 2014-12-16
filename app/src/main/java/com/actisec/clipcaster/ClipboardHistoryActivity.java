@@ -87,7 +87,7 @@ public class ClipboardHistoryActivity extends ListActivity {
                 dataIntent.setAction(Intent.ACTION_SEND);
                 dataIntent.putExtra(Intent.EXTRA_TEXT, mAdapter.getItem(position));
                 dataIntent.setType("text/plain");
-                sendBroadcast(dataIntent);
+                startActivity(dataIntent);
                 return true;
             }
         });
