@@ -1,10 +1,13 @@
-ClipCaster is an open source proof of concept app that shows how easily any installed app can read passwords when they're used from password management applications.
+
+[ LastPass update: ClipCaster can no longer retrieve LastPass credentials. LastPass' fill-in is still vulnerable though. For an explanation of why, and how to verify it yourself (some knowledge of JavaScript required), see my blog post at https://blog.xbc.nz/2014/12/lastpass-attempt-at-client-side-android.html ]
+
+ClipCaster is an open source proof of concept app that shows how any installed app can read passwords when they're used from password management applications.
+
+It can also be used as a tool to track the state of the clipboard, and to get a dump of the JavaScript LastPass uses for its Chrome Fill-In feature.
 
 Ars Technica article: http://ars.to/1vwcmT0
 
-Finds credentials when using LastPass' and RoboForm's 'fill-in' feature for Chrome (Android version at least 4.3) and KeePassDroid
-
-BUT most, if not all, other password managers are vulnerable to this technique. See 'Scope of Vulnerability' below.
+Finds credentials when using RoboForm's 'fill-in' feature for Chrome (Android version at least 4.3) and KeePassDroid.
 
 We do NOT store the passwords or send them anywhere; this app does not even have the Internet permission. The only place they are used is in the notification when they are sniffed.
 
@@ -12,10 +15,11 @@ We do NOT store the passwords or send them anywhere; this app does not even have
 Scope of ClipCaster
 ===
 
-Currently the three use cases demonstrated by ClipCaster are the LastPass applications filling out fields in Chrome, and KeePassDroid's copying notification. RoboForm filling out Chrome has also been added (thanks to Robert for the tipoff!)
+ClipCaster will automatically detect credentials when used from RoboForm filling out fields in Chrome (thanks to Robert for the tipoff) and KeePassDroid's copying notification.
 
 ClipCaster also has a clipboard history, collected while the app is switched on. Just hit the 'history' icon on the main app. With this you can see what any app is doing with the clipboard.
 
+In the case of LastPass, it will also aid manual reproduction of the vulnerability by providing the JavaScript dump and the time it was generated. See https://blog.xbc.nz/2014/12/lastpass-attempt-at-client-side-android.html for an example
 
 ===
 Scope of vulnerability
@@ -23,35 +27,9 @@ Scope of vulnerability
 
 For all password managers: if it requires you pasting your credentials, it is vulnerable. If the manager has a built-in browser or keyboard, using that feature will almost definitely avoid the vulnerability. If the manager doesn't, type passwords manually to avoid the vulnerability
 
-For LastPass: Even though it doesn't mention it, the 'fill-in' feature (the one that pops up with credential choices, as in the screenshots) uses the clipboard and so is vulnerable.The alternatives are: the LastPass keyboard (or input method as they call it), the built-in browser, or using a mobile browser with a browser-specific LastPass extension such as Dolphin.
+For LastPass: Even though it doesn't mention it, the 'fill-in' feature (the one that pops up with credential choices, as in the screenshots) uses the clipboard and so is vulnerable. The alternatives are: the LastPass keyboard (or input method as they call it), the built-in browser, or using a mobile browser with a browser-specific LastPass extension such as Dolphin.
 
 If you're unsure whether a password manager's feature is vulnerable, ask the developers of the password manager. Alternatively, email x.clark@actisec.com and we will attempt to check it out.
-
-
-===
-How
-===
-
-We monitor the clipboard and heuristically determine if it contains a password or not. This isn't completely fool-proof, but it demonstrates the vulnerability. A malicious application could simply get a dump of all the clipboard changes and work it out manually. 
-
-
-===
-Background
-===
-
-A common problem in today's technological landscape is needing to remember a different password for each service. Password managers provide a solution to this problem, by creating a repository of different passwords and locking them with a single master password.
-
-They are often cumbersome to use, so convenience applications facilitate (to varying degrees) the user retrieving and using the stored passwords.
-
-On Android, this poses a problem because the only way to do this in a generic manner is to use the clipboard. The clipboard is visible to any installed application, no permissions required.
-
-
-===
-Why
-===
-
-Hopefully this app will show people that by using these applications they are trading their security for usability. This decision is every individual person's to make, and it should be an informed one.
-
 
 ===
 Permissions
@@ -67,6 +45,6 @@ https://github.com/activems/clipcaster
 
 This project is an independent implementation of the concept in "Hey, You, Get Off of My Clipboard - On How Usability Trumps Security in Android Password Managers" (http://fc13.ifca.ai/proc/4-2.pdf).
 
-A special thanks to Arturo Blas-Jiménez, Daniel Resnick and Andrew WIlson for testing and to Valerio Bozzolan for the Italian localisation.
+A special thanks to Arturo Blas-Jiménez, Daniel Resnick and Andrew Wilson for testing and to Valerio Bozzolan for the Italian localisation.
 
-If any bugs are found, please put a description of them plus your  version of Android on the issues page of the GitHub repo (https://github.com/activems/clipcaster/issues) or email x.clark@actisec.com
+If any bugs are found, please put a description of them plus your version of Android on the issues page of the GitHub repo (https://github.com/activems/clipcaster/issues) or email x.clark@actisec.com

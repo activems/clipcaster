@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 group = 'com.actisec'
-def code = 57
+def code = 58
 version = '1.0.' + code
 
 android {

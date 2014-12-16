@@ -1,1 +1,1 @@
-Intercepts passwords from LastPass, RoboForm and KeePassDroid as they're used
+Intercepts sensitive data from LastPass, RoboForm and KeePassDroid to Chrome

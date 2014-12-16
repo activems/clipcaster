@@ -51,7 +51,6 @@
     <string name="creds_notif_content_big">&lt;b>User&lt;/b>: %1$s&lt;br/>&lt;b>Pass&lt;/b>: %2$s</string>
     <string name="service_toggle_pretext">&lt;b>Monitoraggio: &lt;/b></string>
     <string name="history">Storico</string>
-    <string name="case_lastpass">LastPass: Suggeritore campi per Chrome</string>
     <string name="case_roboform">RoboForm: Suggeritore campi per Chrome</string>
     <string name="case_keepassdroid">KeePassDroid: Copia dalle notifiche recenti</string>
 

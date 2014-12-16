@@ -33,7 +33,7 @@
     <string name="about_intro">This app attempts to show how easily passwords autofilled using some password managers can be sniffed by malicious applications</string>
     <string name="about_supported_apps_header"><![CDATA[<b>Supported Apps</b>]]></string>
     <string name="about_instruction_header"><![CDATA[<b>Instructions</b>]]></string>
-    <string name="about_instructions">Use one of the supported applications to fill in a password as you usually would. When we sniff it, we\'ll post a notification</string>
+    <string name="about_instructions">Use one of the supported applications to fill in a password as you usually would. When we sniff it, we\'ll post a notification. While on, we also track the clipboard. Press the History button above to see it. </string>
     <string name="about_password_not_stored"><![CDATA[We do <b>NOT</b> store the passwords or send them anywhere; this app does not even have the Internet permission. The only place they are used is in the notification when they are sniffed]]></string>
     <string name="about_vulnerability"><![CDATA[The clipboard vulnerability is well known in the security community. The paper that inspired this proof of concept can be found at <a href="http://fc13.ifca.ai/proc/4–2.pdf">http://fc13.ifca.ai/proc/4–2.pdf</a>]]></string>
     <string name="about_source_header"><![CDATA[<b>Source</b>]]></string>

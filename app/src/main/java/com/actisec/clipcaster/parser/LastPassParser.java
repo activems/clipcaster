@@ -64,7 +64,21 @@ public class LastPassParser extends AbstractClipParser {
         if(creds.isEmpty()) return null;
         ScrapedData result = new ScrapedData();
         result.creds = new ScrapedCredentials(new String(Base64.decode(creds.get(0).getBytes(), 0)),new String(Base64.decode(creds.get(1).getBytes(), 0)));
+        if(!sCheckString(result.creds.user) || !sCheckString(result.creds.pass)){
+            result.creds = null;
+        }
         result.source = new Source(string,timeOfEntry);
         return result;
+    }
+
+    public static boolean sCheckString(String toCheck){
+        char[] array = toCheck.toCharArray();
+        for (int i = 0; i < array.length; i++) {
+            char c = array[i];
+            if(c < 33 || c > 126){
+                return false;
+            }
+        }
+        return true;
     }
 }
