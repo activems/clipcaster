@@ -27,27 +27,25 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.actisec.clipcaster.parser;
-
-import android.content.Context;
-
-import com.actisec.clipcaster.ScrapedCredentials;
-import com.actisec.clipcaster.ScrapedData;
-import com.actisec.clipcaster.ScrapedDataHandler;
+package com.actisec.clipcaster;
 
 /**
- * Created by xiao on 11/11/14.
+ * Created by xiao on 16/12/14.
  */
-public abstract class AbstractClipParser implements ClipParser {
-    @Override
-    public void onClip(Context context, ScrapedDataHandler handler, String contents) {
-        long timeOfEntry = System.currentTimeMillis();
-        ScrapedData creds = getScrapedData(context, contents);
-        if(creds != null) {
-            if(creds.source != null) creds.source.timeOfNotification = timeOfEntry;
-            handler.handleData(creds);
-        }
+public class ScrapedData {
+    public ScrapedCredentials creds;
+    public Source source;
+
+    public ScrapedData(ScrapedCredentials creds, Source source) {
+        this.creds = creds;
+        this.source = source;
     }
 
-    abstract ScrapedData getScrapedData(Context context, String contents);
+    public ScrapedData(ScrapedCredentials creds) {
+        this.creds = creds;
+    }
+
+    public ScrapedData() {
+    }
+
 }

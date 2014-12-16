@@ -33,6 +33,8 @@ import android.content.Context;
 import android.util.Base64;
 
 import com.actisec.clipcaster.ScrapedCredentials;
+import com.actisec.clipcaster.ScrapedData;
+import com.actisec.clipcaster.Source;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,12 +47,13 @@ import java.util.regex.Pattern;
 public class LastPassParser extends AbstractClipParser {
 
     @Override
-    ScrapedCredentials getCreds(Context context, String contents) {
-        return sGetCreds(contents);
+    ScrapedData getScrapedData(Context context, String contents) {
+        return sGetData(contents);
     }
 
     public static String REGEX = "atob\\(\\'([^']*)\\'\\)";
-    public static ScrapedCredentials sGetCreds(String string){
+    public static ScrapedData sGetData(String string){
+        long timeOfEntry = System.currentTimeMillis();
         Pattern p = Pattern.compile(REGEX);
         //  get a matcher object
         Matcher m = p.matcher(string);
@@ -59,7 +62,9 @@ public class LastPassParser extends AbstractClipParser {
             creds.add(m.group(1));
         }
         if(creds.isEmpty()) return null;
-
-        return new ScrapedCredentials(new String(Base64.decode(creds.get(0).getBytes(), 0)),new String(Base64.decode(creds.get(1).getBytes(), 0)));
+        ScrapedData result = new ScrapedData();
+        result.creds = new ScrapedCredentials(new String(Base64.decode(creds.get(0).getBytes(), 0)),new String(Base64.decode(creds.get(1).getBytes(), 0)));
+        result.source = new Source(string,timeOfEntry);
+        return result;
     }
 }

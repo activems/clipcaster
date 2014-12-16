@@ -31,12 +31,12 @@ package com.actisec.clipcaster.parser;
 
 import android.content.Context;
 
-import com.actisec.clipcaster.CredHandler;
+import com.actisec.clipcaster.ScrapedDataHandler;
 
 /**
  * Created by xiao on 11/11/14.
  */
 public interface ClipParser {
-    void onClip(Context context, CredHandler handler, String contents);
+    void onClip(Context context, ScrapedDataHandler handler, String contents);
 
 }

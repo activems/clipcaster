@@ -44,8 +44,6 @@ public class ScrapedCredentials {
     public String pass;
     @Nullable
     public String unknown;
-    @Nullable
-    public String source;
 
     public boolean isCertain = true;
 
@@ -61,8 +59,6 @@ public class ScrapedCredentials {
         sb.append(", pass='").append(pass).append('\'')
                 .append('\n');
         sb.append(", unknown='").append(unknown).append('\'')
-                .append('\n');
-        sb.append(", source='").append(source).append('\'')
                 .append('\n');
         sb.append(", isCertain=").append(isCertain)
                 .append('\n');
@@ -80,7 +76,6 @@ public class ScrapedCredentials {
         this.user = user;
         this.pass = pass;
         this.unknown = unknown;
-        this.source = source;
     }
 
 }

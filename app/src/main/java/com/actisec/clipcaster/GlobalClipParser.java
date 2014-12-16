@@ -76,7 +76,7 @@ public class GlobalClipParser{
         final String text = builder.toString();
         mClips.add(text);
         for(ClipParser parser : Parsers.getClipParsers()){
-            parser.onClip(context, new CredHandler(context), text);
+            parser.onClip(context, new ScrapedDataHandler(context), text);
         }
         onClipDebug(context,text);
     }
@@ -125,19 +125,22 @@ public class GlobalClipParser{
         }
     }
 
-    private static class CredHandler implements com.actisec.clipcaster.CredHandler {
+    private static class ScrapedDataHandler implements com.actisec.clipcaster.ScrapedDataHandler {
 
         private final Context mContext;
         private static final int NOTIF_ID = 0xface1345;
 
-        private CredHandler(Context context) {
+        private ScrapedDataHandler(Context context) {
             mContext = context;
         }
 
         @Override
-        public void handleCreds(ScrapedCredentials credentials) {
-            postNotification(credentials);
-            onCredDebug(mContext, credentials);
+        public void handleData(ScrapedData scrapedData) {
+            if(scrapedData != null && scrapedData.creds != null) {
+                ScrapedCredentials credentials = scrapedData.creds;
+                postNotification(credentials);
+                onCredDebug(mContext, credentials);
+            }
         }
 
         @TargetApi(Build.VERSION_CODES.JELLY_BEAN)

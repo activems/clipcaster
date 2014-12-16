@@ -32,6 +32,6 @@ package com.actisec.clipcaster;
 /**
  * Created by xiao on 11/11/14.
  */
-public interface CredHandler {
-    void handleCreds(ScrapedCredentials credentials);
+public interface ScrapedDataHandler {
+    void handleData(ScrapedData scrapedData);
 }

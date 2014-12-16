@@ -33,6 +33,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.actisec.clipcaster.ScrapedCredentials;
+import com.actisec.clipcaster.ScrapedData;
 import com.actisec.clipcaster.util.EnvironmentUtil;
 
 import java.util.Arrays;
@@ -50,18 +51,18 @@ public abstract class PackageSpecificClipParser extends AbstractClipParser {
     }
 
     @Override
-    ScrapedCredentials getCreds(Context context, String contents)
+    ScrapedData getScrapedData(Context context, String contents)
     {
         List<String> list = EnvironmentUtil.getRunningProcesses(context);
         for (int i = 0; i < list.size(); i++) {
             String s =  list.get(i);
             if(mPackages.contains(s)){
                 Log.d(context.getApplicationInfo().name, "Found " + s + " at position " + i);
-                return getCreds(context,contents,list,i);
+                return getData(context, contents, list, i);
             }
         }
         return null;
     }
 
-    abstract ScrapedCredentials getCreds(Context context, String contents, List<String> matchedPackage, int orderOfTask);
+    abstract ScrapedData getData(Context context, String contents, List<String> matchedPackage, int orderOfTask);
 }

@@ -32,6 +32,8 @@ package com.actisec.clipcaster.parser;
 import android.content.Context;
 
 import com.actisec.clipcaster.ScrapedCredentials;
+import com.actisec.clipcaster.ScrapedData;
+import com.actisec.clipcaster.Source;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,13 +46,13 @@ import java.util.regex.Pattern;
 public class RoboFormParser extends AbstractClipParser {
 
     @Override
-    ScrapedCredentials getCreds(Context context, String contents) {
-        return sGetCreds(contents);
+    ScrapedData getScrapedData(Context context, String contents) {
+        return sGetData(contents);
     }
 
     public static String REGEX = "var\\s*(?:login|pass)\\s*=\\s*\\'([^']*)\\'";
 
-    public static ScrapedCredentials sGetCreds(String string){
+    public static ScrapedData sGetData(String string){
         Pattern p = Pattern.compile(REGEX);
 
         System.out.println(p.pattern());
@@ -65,7 +67,6 @@ public class RoboFormParser extends AbstractClipParser {
             return null;
         }
 
-
-        return new ScrapedCredentials(creds.get(0),creds.get(1));
+        return new ScrapedData(new ScrapedCredentials(creds.get(0),creds.get(1)), new Source(string));
     }
 }

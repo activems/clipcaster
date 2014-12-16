@@ -32,6 +32,7 @@ package com.actisec.clipcaster.parser;
 import android.test.AndroidTestCase;
 
 import com.actisec.clipcaster.ScrapedCredentials;
+import com.actisec.clipcaster.ScrapedData;
 
 public class RoboformParserTest extends AndroidTestCase {
 
@@ -40,7 +41,9 @@ public class RoboformParserTest extends AndroidTestCase {
         return "var login = '" + user + "' ; var pass = '" + pass + "';";
     }
     private ScrapedCredentials innerCredTest(String content) throws Throwable{
-        final ScrapedCredentials creds = mParser.getCreds(getContext(), content);
+        final ScrapedData data = mParser.getScrapedData(getContext(), content);
+        assertNotNull(data);
+        final ScrapedCredentials creds = data.creds;
         assertNotNull(creds);
         assertNotNull(creds.user);
         assertNotNull(creds.pass);
