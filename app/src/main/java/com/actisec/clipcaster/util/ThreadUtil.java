@@ -27,56 +27,49 @@
  * either expressed or implied, of the FreeBSD Project.
  */
 
-package com.actisec.clipcaster;
+package com.actisec.clipcaster.util;
 
-import org.jetbrains.annotations.Nullable;
+import android.os.Handler;
+import android.os.Looper;
 
 /**
- * Scraped credentials.
- *
- * Either user and/or pass is not null, OR
- * unknown is not null
+ * Created by xiao on 23/12/14.
  */
-public class ScrapedCredentials {
-    @Nullable
-    public String user;
-    @Nullable
-    public String pass;
-    @Nullable
-    public String unknown;
+public class ThreadUtil {
+    private ThreadUtil() {}
 
-    public boolean isCertain = true;
-
-    public ScrapedCredentials(ScrapedCredentials creds) {
-        user = creds.user;
-        pass = creds.pass;
-        unknown = creds.unknown;
-    }
-
-    public ScrapedCredentials() {
+    public static void runOnThread(Runnable runnable, Looper threadLooper){
+        if(Looper.myLooper() == threadLooper){
+            runnable.run();
+        } else {
+            new Handler(threadLooper).post(runnable);
+        }
 
     }
 
+    public static void runOnThread(Runnable runnable, Handler threadHandler){
+        if(onThread(threadHandler)){
+            runnable.run();
+        } else {
+            threadHandler.post(runnable);
+        }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("ScrapedCredentials{").append('\n');
-        sb.append("user='").append(user).append('\'')
-                .append('\n');
-        sb.append(", pass='").append(pass).append('\'')
-                .append('\n');
-        sb.append(", unknown='").append(unknown).append('\'')
-                .append('\n');
-        sb.append(", isCertain=").append(isCertain)
-                .append('\n');
-        sb.append('}');
-        return sb.toString();
     }
 
-    public ScrapedCredentials(String user, String pass) {
-        this.user = user;
-        this.pass = pass;
+    public static void runOnMainThread(Runnable runnable){
+        runOnThread(runnable,Looper.getMainLooper());
+    }
+
+    public static boolean onThread(Thread thread){
+        return Thread.currentThread().equals(thread);
     }
 
 
+    public static boolean onThread(Looper looper){
+        return Thread.currentThread().equals(looper.getThread());
+    }
+
+    public static boolean onThread(Handler handler){
+        return Thread.currentThread().equals(handler.getLooper().getThread());
+    }
 }

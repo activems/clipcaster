@@ -37,7 +37,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
+
+import com.evgenii.jsevaluator.JsEvaluator;
+import com.evgenii.jsevaluator.interfaces.JsCallback;
 
 
 /**
@@ -59,6 +63,12 @@ public class ClipCasterService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
+        new JsEvaluator(this).evaluate("7 * 2", new JsCallback() {
+            @Override
+            public void onResult(String s) {
+                Log.d("TEST", "result: " + s);
+            }
+        });
         return START_STICKY;
     }
 
@@ -69,16 +79,13 @@ public class ClipCasterService extends Service {
 
     @Override
     public void onCreate(){
+        // Throws NPE with ServiceTestCase
+        if(!BuildConfig.IS_JUNIT){
+            startForeground(42, createOngoingNotification());
+        }
         toast(this, "ClipCaster service starting", false);
-        startForeground(42, createOngoingNotification());
         sClipboardManager = getManager();
         getManager().addPrimaryClipChangedListener(mListener);
-        getManager().addPrimaryClipChangedListener(new ClipboardManager.OnPrimaryClipChangedListener() {
-            @Override
-            public void onPrimaryClipChanged() {
-                //Do things here
-            }
-        });
     }
 
     private Notification createOngoingNotification() {
@@ -93,7 +100,11 @@ public class ClipCasterService extends Service {
     @Override
     public void onDestroy(){
         toast(this, "ClipCaster service stopping", false);
-        stopForeground(true);
+
+        // Throws NPE with ServiceTestCase
+        if(!BuildConfig.IS_JUNIT) {
+            stopForeground(true);
+        }
         getManager().removePrimaryClipChangedListener(mListener);
     }
 
@@ -113,11 +124,4 @@ public class ClipCasterService extends Service {
     public ClipboardManager getManager(Context context){
         return (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
     }
-
-    public void foo(Context context){
-        ClipboardManager manager = getManager(context);
-        CharSequence textOnClipboard = manager.getPrimaryClip().getItemAt(0).coerceToText(context);
-    }
-
-
 }

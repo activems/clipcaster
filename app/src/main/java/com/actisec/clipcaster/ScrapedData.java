@@ -35,6 +35,7 @@ package com.actisec.clipcaster;
 public class ScrapedData {
     public ScrapedCredentials creds;
     public Source source;
+    public String destinationUrl;
 
     public ScrapedData(ScrapedCredentials creds, Source source) {
         this.creds = creds;
@@ -54,6 +55,15 @@ public class ScrapedData {
 
     public ScrapedData(ScrapedCredentials creds) {
         this.creds = creds;
+    }
+
+    public ScrapedData(ScrapedData other) {
+        if(other.creds != null) {
+            creds = new ScrapedCredentials(other.creds);
+        }
+        if(other.source != null) {
+            source = new Source(other.source);
+        }
     }
 
     public ScrapedData() {

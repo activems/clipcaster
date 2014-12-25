@@ -37,6 +37,7 @@ public class Source {
     public long timeOfNotification = -1;
 
     public Source() {
+
     }
 
     public Source(String javascriptProgram, long timeOfNotification) {
@@ -47,6 +48,11 @@ public class Source {
     public Source(String javascriptProgram) {
         this.javascriptProgram = javascriptProgram;
         this.timeOfNotification = System.currentTimeMillis();
+    }
+
+    public Source(Source source) {
+        javascriptProgram = source.javascriptProgram;
+        timeOfNotification = source.timeOfNotification;
     }
 
     @Override

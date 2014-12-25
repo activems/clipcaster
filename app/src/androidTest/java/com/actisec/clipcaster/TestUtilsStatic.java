@@ -29,54 +29,49 @@
 
 package com.actisec.clipcaster;
 
-import org.jetbrains.annotations.Nullable;
+import android.content.Context;
+import android.content.pm.PackageManager;
+
+import org.apache.commons.io.IOUtils;
+import org.codehaus.jackson.map.ObjectMapper;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
- * Scraped credentials.
- *
- * Either user and/or pass is not null, OR
- * unknown is not null
+ * Created by xiao on 19/12/14.
  */
-public class ScrapedCredentials {
-    @Nullable
-    public String user;
-    @Nullable
-    public String pass;
-    @Nullable
-    public String unknown;
+public class TestUtilsStatic {
+    public static class TestUtils {
+        private final Context mContext;
 
-    public boolean isCertain = true;
+        public TestUtils(Context context) throws Exception {
+            if(!context.getPackageName().endsWith("test")) {
+                mContext = context.createPackageContext("com.actisec.clipcaster.test",
+                        Context.CONTEXT_IGNORE_SECURITY);
+            } else {
+                mContext = context;
+            }
 
-    public ScrapedCredentials(ScrapedCredentials creds) {
-        user = creds.user;
-        pass = creds.pass;
-        unknown = creds.unknown;
+        }
+
+        public Source readSource(int resourceId) throws IOException {
+            return TestUtilsStatic.readSource(mContext,resourceId);
+        }
+        public String readString(int resourceId) throws IOException {
+            return TestUtilsStatic.readString(mContext,resourceId);
+        }
     }
 
-    public ScrapedCredentials() {
-
+    private TestUtilsStatic () {}
+    public static Source readSource(Context context, int resourceId) throws IOException {
+        final String rawString = readString(context, resourceId);
+        return new ObjectMapper().readValue(rawString, Source.class);
     }
 
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("ScrapedCredentials{").append('\n');
-        sb.append("user='").append(user).append('\'')
-                .append('\n');
-        sb.append(", pass='").append(pass).append('\'')
-                .append('\n');
-        sb.append(", unknown='").append(unknown).append('\'')
-                .append('\n');
-        sb.append(", isCertain=").append(isCertain)
-                .append('\n');
-        sb.append('}');
-        return sb.toString();
+    public static String readString(Context context, int resourceId) throws IOException {
+        InputStream is = context.getResources().openRawResource(resourceId);
+        return IOUtils.toString(is);
     }
-
-    public ScrapedCredentials(String user, String pass) {
-        this.user = user;
-        this.pass = pass;
-    }
-
 
 }

@@ -1,13 +1,17 @@
 apply plugin: 'com.android.application'
 
 group = 'com.actisec'
-def code = 59
+def code = 60
 version = '1.0.' + code
 
 android {
     compileSdkVersion 20
     buildToolsVersion "20.0.0"
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
     defaultConfig {
         applicationId "com.actisec.clipcaster"
         minSdkVersion 16
@@ -21,9 +25,40 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    android {
+        packagingOptions {
+            // jackson
+            exclude 'META-INF/ASL2.0'
+            exclude 'META-INF/LICENSE'
+            exclude 'META-INF/NOTICE'
+
+            //apache commons lang
+            exclude 'META-INF/LICENSE.txt'
+            exclude 'META-INF/NOTICE.txt'
+        }
+    }
+    productFlavors {
+        normal {
+            buildConfigField  "boolean", "IS_JUNIT", "false"
+        }
+        mocking {
+            buildConfigField  "boolean", "IS_JUNIT", "true"
+        }
+    }
+}
+sourceSets {
+    androidTest {
+        java.srcDir file('src/androidTest/java')
+        resources.srcDir file('src/androidTest/res')
+    }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.intellij:annotations:+@jar'
+    compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
+    compile 'commons-io:commons-io:2.1'
+    compile 'org.apache.commons:commons-lang3:3.3.2'
+    compile files('libs/js-evaluator.jar')
 }

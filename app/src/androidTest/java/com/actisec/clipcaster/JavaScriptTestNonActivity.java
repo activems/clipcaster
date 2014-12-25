@@ -29,54 +29,53 @@
 
 package com.actisec.clipcaster;
 
-import org.jetbrains.annotations.Nullable;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.test.AndroidTestCase;
+
+import com.evgenii.jsevaluator.JsEvaluator;
+import com.evgenii.jsevaluator.interfaces.JsCallback;
 
 /**
- * Scraped credentials.
- *
- * Either user and/or pass is not null, OR
- * unknown is not null
+ * Created by xiao on 23/12/14.
  */
-public class ScrapedCredentials {
-    @Nullable
-    public String user;
-    @Nullable
-    public String pass;
-    @Nullable
-    public String unknown;
+public class JavaScriptTestNonActivity extends AndroidTestCase {
+    public void testEvaluate_ctorOnNotMain_evalOnNotMain() throws Exception {
+        HandlerThread thread = new HandlerThread("test_thread");
+        thread.start();
+        Handler handler = new Handler(thread.getLooper());
+        final JsEvaluator[] evaluator = new JsEvaluator[1];
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (evaluator){
+                    evaluator[0] = new JsEvaluator(mContext);
+                }
+            }
+        });
 
-    public boolean isCertain = true;
+        Thread.sleep(2000);
+        assertNotNull(evaluator[0]);
+        final String[] result = new String[1];
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (evaluator){
+                    evaluator[0].evaluate("2 + 3", new JsCallback() {
+                        @Override
+                        public void onResult(String value) {
+                            synchronized (result){
+                                result[0] = value;
+                            }
+                        }
+                    });
+                }
+            }
+        });
 
-    public ScrapedCredentials(ScrapedCredentials creds) {
-        user = creds.user;
-        pass = creds.pass;
-        unknown = creds.unknown;
+        Thread.sleep(2000);
+        assertNotNull(result[0]);
+        assertEquals(5, Integer.parseInt(result[0]));
+
     }
-
-    public ScrapedCredentials() {
-
-    }
-
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("ScrapedCredentials{").append('\n');
-        sb.append("user='").append(user).append('\'')
-                .append('\n');
-        sb.append(", pass='").append(pass).append('\'')
-                .append('\n');
-        sb.append(", unknown='").append(unknown).append('\'')
-                .append('\n');
-        sb.append(", isCertain=").append(isCertain)
-                .append('\n');
-        sb.append('}');
-        return sb.toString();
-    }
-
-    public ScrapedCredentials(String user, String pass) {
-        this.user = user;
-        this.pass = pass;
-    }
-
-
 }

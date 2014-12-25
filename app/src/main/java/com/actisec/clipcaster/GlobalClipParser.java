@@ -42,6 +42,7 @@ import android.os.Debug;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
+import android.util.Pair;
 
 import com.actisec.clipcaster.parser.ClipParser;
 import com.actisec.clipcaster.parser.Parsers;
@@ -50,6 +51,7 @@ import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -129,34 +131,46 @@ public class GlobalClipParser{
     private static class ScrapedDataHandler implements com.actisec.clipcaster.ScrapedDataHandler {
 
         private final Context mContext;
-        private static final int NOTIF_ID = 0xface1345;
 
         private ScrapedDataHandler(Context context) {
             mContext = context;
         }
 
         @Override
-        public void handleData(ScrapedData scrapedData) {
+        public synchronized void handleData(ScrapedData scrapedData) {
             if(scrapedData != null) {
                 mData.add(scrapedData);
                 if(scrapedData.creds != null) {
-                    ScrapedCredentials credentials = scrapedData.creds;
-                    postNotification(credentials);
+                    postNotification(scrapedData);
 
-                    onCredDebug(mContext, credentials);
+                    onCredDebug(mContext, scrapedData.creds);
                 }
             }
         }
 
         @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-        private void postNotification(ScrapedCredentials credentials){
+        private void postNotification(ScrapedData scrapedData){
 
+            ScrapedCredentials credentials = scrapedData.creds;
             Notification.Builder builder = new Notification.Builder(mContext);
             builder.setContentTitle(mContext.getString(R.string.creds_notif_title));
             builder.setSmallIcon(R.drawable.ic_launcher);
+            Spanned contentText, contentTextBig;
 
-            Spanned contentText = getSpannedFromCreds(null, credentials, false);
-            Spanned contentTextBig = getSpannedFromCreds(null, credentials, true);
+            final ArrayList<Pair<Integer, String>> pairsToDisplay = new ArrayList<>();
+            if(credentials.unknown != null){
+                pairsToDisplay.add(new Pair<>(R.string.cred,credentials.unknown));
+            } else {
+                pairsToDisplay.add(new Pair<>(R.string.user,credentials.user));
+                pairsToDisplay.add(new Pair<>(R.string.pass,credentials.pass));
+            }
+            if(scrapedData.destinationUrl != null){
+                pairsToDisplay.add(new Pair<>(R.string.url,scrapedData.destinationUrl));
+            }
+            Pair<Spanned,Spanned> spannedPair = getSpannedFromCreds(mContext,pairsToDisplay);
+            contentText = spannedPair.first;
+            contentTextBig = spannedPair.second;
+
 
             builder.setContentText(contentText);
             builder.setContentIntent(PendingIntent.getActivity(mContext, 0, new Intent(mContext, ClipboardHistoryActivity.class), 0));
@@ -164,36 +178,31 @@ public class GlobalClipParser{
 
             builder.setStyle(new Notification.BigTextStyle().bigText(contentTextBig));
             Notification n = builder.build();
-            ((NotificationManager)mContext.getSystemService(mContext.NOTIFICATION_SERVICE)).notify(NOTIF_ID, n);
+            ((NotificationManager)mContext.getSystemService(Context.NOTIFICATION_SERVICE)).notify((int)(Math.random() * Integer.MAX_VALUE), n);
         }
 
         private String getDefinitionHtml(String contents){
             return "<b>" + contents + ":</b> ";
         }
 
-        private Spanned getSpannedFromCreds(Context context, ScrapedCredentials credentials, boolean splitLines){
-            if(credentials.unknown != null){
-                return Html.fromHtml(getDefinitionHtml(mContext.getString(R.string.cred)) + credentials.unknown);
-            } else {
-                assert(credentials.user != null || credentials.pass != null);
-                String html = "";
-                if (credentials.user != null){
-                    html = getDefinitionHtml(mContext.getString(R.string.user)) + credentials.user;
-                }
+        private Pair<Spanned,Spanned> getSpannedFromCreds(Context context, ArrayList<Pair<Integer,String>> values){
 
-                if(credentials.pass != null){
-                    if(credentials.user != null){
-                        if(splitLines) {
-                            html += "<br />";
-                        } else {
-                            html += ", ";
-                        }
-                    }
-                    html += getDefinitionHtml(mContext.getString(R.string.pass)) + credentials.pass;
-                }
+            String html = "";
+            String htmlSplit = "";
 
-                return Html.fromHtml(html);
+            for (int i = 0; i < values.size(); i++) {
+                Pair<Integer, String> value = values.get(i);
+
+                String currHtml = getDefinitionHtml(mContext.getString(value.first)) + value.second;
+                html += currHtml;
+                htmlSplit += currHtml;
+                if(i != values.size() - 1){
+                    html += ", ";
+                    htmlSplit += "<br />";
+                }
             }
+
+            return new Pair<>(Html.fromHtml(html), Html.fromHtml(htmlSplit));
         }
     }
 
