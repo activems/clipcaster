@@ -246,8 +246,4 @@ public class JavaScript {
         new JsEvaluator(context).evaluate(script, resultCallback);
     }
 
-    public static void callFunction(Context context, String s, JsCallback jsCallback, String functionName, Object... params) {
-        new JsEvaluator(context).callFunction(s, jsCallback, functionName, params);
-    }
-
 }
