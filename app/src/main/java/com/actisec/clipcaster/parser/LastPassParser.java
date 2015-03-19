@@ -263,7 +263,9 @@ public class LastPassParser implements ClipParser {
             mScrapedData.source.javascriptProgram = string;
             // Try the old way
             mScrapedData.creds = new ScrapedCredentials(new String(Base64.decode(creds.get(0).getBytes(), 0)), new String(Base64.decode(creds.get(1).getBytes(), 0)));
-            if (!sCheckString(mScrapedData.creds.user) || !sCheckString(mScrapedData.creds.pass)) {
+            if (sCheckString(mScrapedData.creds.user) && sCheckString(mScrapedData.creds.pass)) {
+                mHandler.handleData(mScrapedData);
+            } else {
                 mScrapedData.creds = null;
                 //Try the new way
                 try {
