@@ -34,9 +34,20 @@ import android.content.Context;
 import com.actisec.clipcaster.ScrapedDataHandler;
 
 /**
- * Created by xiao on 11/11/14.
+ * An interface for objects that can pull credentials out of clipboard contents
+ *
+ * Add derived classes to the {@link com.actisec.clipcaster.parser.Parsers} class
  */
 public interface ClipParser {
+    /**
+     * Method called when new clipboard contents are detected.
+     *
+     * MUST be thread safe. Preferably doesn't block for extended periods.
+     *
+     * @param context An Android Context
+     * @param handler The object that any credentials should be passed on to
+     * @param contents The contents of the Clipboard
+     */
     void onClip(Context context, ScrapedDataHandler handler, String contents);
 
 }

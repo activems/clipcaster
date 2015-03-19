@@ -30,17 +30,51 @@
 package com.actisec.clipcaster;
 
 /**
- * Created by xiao on 16/12/14.
+ * A data object holding {@link com.actisec.clipcaster.ScrapedCredentials} and possibly some
+ * information about the origin of the credentials
  */
 public class ScrapedData {
+    /**
+     * The credentials. Can be null
+     */
     public ScrapedCredentials creds;
+
+    /**
+     * The {@link Source} of the credentials. Can be null
+     */
     public Source source;
+
+    /**
+     * The url that the credentials were intended for. Can be null
+     */
     public String destinationUrl;
+
+
+    public ScrapedData() {
+    }
+
+
+    public ScrapedData(ScrapedCredentials creds) {
+        this.creds = creds;
+    }
 
     public ScrapedData(ScrapedCredentials creds, Source source) {
         this.creds = creds;
         this.source = source;
     }
+
+    public ScrapedData(ScrapedData other) {
+        if(other.creds != null) {
+            creds = new ScrapedCredentials(other.creds);
+        }
+        if(other.source != null) {
+            source = new Source(other.source);
+        }
+        if(other.destinationUrl != null) {
+            destinationUrl = other.destinationUrl;
+        }
+    }
+
 
     @Override
     public String toString() {
@@ -51,22 +85,6 @@ public class ScrapedData {
                 .append('\n');
         sb.append('}');
         return sb.toString();
-    }
-
-    public ScrapedData(ScrapedCredentials creds) {
-        this.creds = creds;
-    }
-
-    public ScrapedData(ScrapedData other) {
-        if(other.creds != null) {
-            creds = new ScrapedCredentials(other.creds);
-        }
-        if(other.source != null) {
-            source = new Source(other.source);
-        }
-    }
-
-    public ScrapedData() {
     }
 
 }

