@@ -30,8 +30,14 @@
 package com.actisec.clipcaster;
 
 /**
- * Created by xiao on 11/11/14.
+ * An interface for objects that can process {@link com.actisec.clipcaster.ScrapedData}
  */
 public interface ScrapedDataHandler {
+
+    /**
+     * Processes some scraped data
+     * @param scrapedData The data scraped from the clipboard contents. Will not be null,
+     *                    but may not contain valid data. See {@link com.actisec.clipcaster.ScrapedData}
+     */
     void handleData(ScrapedData scrapedData);
 }

@@ -1,3 +1,16 @@
+UPDATE 2
+--------
+
+I have automated the change that LastPass made to their fill-in process. It will decrypt credentials for websites listed in the 'login_urls' resource.
+
+This was working as of December 2014. LastPass may have changed things up again since then, but they probably can't do anything to make app-fill work securely in pre-5.0 devices (which currently accounts for >95% of devices)
+
+I am no longer maintaining this application as I believe it has served its original purpose: to publicise the clipboard vulnerability in Android password managers.
+
+If anybody would like to take over, open an issue and I will be happy to link to their forked repo in this README.md.
+
+Thanks to everybody who helped spread the word!
+
 UPDATE
 -----
 

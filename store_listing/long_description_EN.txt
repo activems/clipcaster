@@ -1,7 +1,8 @@
+[ Update: I no longer have time to continue to improve this app. Thanks to everybody who tried it out and improved awareness of this vulnerability! Improvements & fixes are welcome via Github ]
+
+[ LastPass update round 2: I automated the exploit for Facebook, as described in my blog post. If LastPass changes things up again it will stop working and may take a few days to get back up, but hopefully this time they will realise how ineffective this is and stop exposing their users to this vulnerability. ]
 
 [ LastPass update: ClipCaster no longer automates the retrieval LastPass credentials. LastPass' fill-in is still vulnerable though. For an explanation of why, and how to verify it yourself (some knowledge of JavaScript required), see my blog post at https://blog.xbc.nz/2014/12/lastpass-attempt-at-client-side-android.html ]
-
-Now on F-Droid: https://f-droid.org/repository/browse/?fdfilter=clipcaster&fdid=com.actisec.clipcaster
 
 ClipCaster is an open source proof of concept app that shows how any installed app can read passwords when they're used from password management applications.
 
@@ -12,6 +13,8 @@ Ars Technica article: http://ars.to/1vwcmT0
 Finds credentials when using RoboForm's 'fill-in' feature for Chrome (Android version at least 4.3) and KeePassDroid.
 
 We do NOT store the passwords or send them anywhere; this app does not even have the Internet permission. The only place they are used is in the notification when they are sniffed.
+
+Now on the open source app store, F-Droid: https://f-droid.org/repository/browse/?fdfilter=clipcaster&fdid=com.actisec.clipcaster
 
 ===
 Scope of ClipCaster
