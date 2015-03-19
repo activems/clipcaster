@@ -47,11 +47,11 @@ public class JavaScript {
     /**
      * The JavaScript program
      */
-    public final String source;
+    private final String source;
     /**
      * The JavaScript program as a char[] array
      */
-    public final char[] sourceChars;
+    private final char[] sourceChars;
 
 
     /**
@@ -84,7 +84,7 @@ public class JavaScript {
      * @param closing The closing character of the matching pai
      * @return the index of the matching character, or -1 if no matching character could be found
      */
-    public int findClosing(int openPos, char opening, char closing) {
+    private int findClosing(int openPos, char opening, char closing) {
         int closePos = openPos;
         int counter = 1;
         while (counter > 0) {
@@ -108,7 +108,7 @@ public class JavaScript {
      *                index must be '('
      * @return the index of the matching parenthesis, or -1 if no match is found
      */
-    public int findClosingParen(int openPos){
+    private int findClosingParen(int openPos){
         return findClosing(openPos, '(', ')');
     }
     /**
@@ -117,7 +117,7 @@ public class JavaScript {
      *                index must be '{'
      * @return the index of the matching brace, or -1 if no match is found
      */
-    public int findClosingBrace(int openPos){
+    private int findClosingBrace(int openPos){
         return findClosing(openPos, '{', '}');
     }
 
