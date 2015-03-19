@@ -40,18 +40,50 @@ import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
 /**
-* Created by xiao on 19/12/14.
+* A class that can partially dissect a JavaScript program
+ *
 */
 public class JavaScript {
+    /**
+     * The JavaScript program
+     */
     public final String source;
+    /**
+     * The JavaScript program as a char[] array
+     */
     public final char[] sourceChars;
 
 
+    /**
+     * Constructor
+     *
+     * @param source The JavaScript program to be dissected
+     */
     public JavaScript(String source) {
         this.source = source;
         sourceChars = source.toCharArray();
     }
 
+    /**
+     * Finds the position of a 'closing' character that matches the 'opening'
+     * character.
+     *
+     * For example, if the program passed into the constructor was
+     *
+     * {@code foo(bar(),2)}
+     *
+     * the call
+     *
+     * {@code findClosing(3, '(', ')'); }
+     *
+     * would return {@code 11}, the index of the ')' after '2'.
+     *
+     * @param openPos The index of the opening character to match. The character at this index
+     *                must be {@code opening}
+     * @param opening The opening character of the matching pair
+     * @param closing The closing character of the matching pai
+     * @return the index of the matching character, or -1 if no matching character could be found
+     */
     public int findClosing(int openPos, char opening, char closing) {
         int closePos = openPos;
         int counter = 1;
@@ -70,13 +102,53 @@ public class JavaScript {
         return closePos;
     }
 
+    /**
+     * Finds the index of a matching ')', given the position of a '('
+     * @param openPos The index of the opening parenthesis to match. The character at this
+     *                index must be '('
+     * @return the index of the matching parenthesis, or -1 if no match is found
+     */
     public int findClosingParen(int openPos){
         return findClosing(openPos, '(', ')');
     }
+    /**
+     * Finds the index of a matching '}', given the position of a '{'
+     * @param openPos The index of the opening brace to match. The character at this
+     *                index must be '{'
+     * @return the index of the matching brace, or -1 if no match is found
+     */
     public int findClosingBrace(int openPos){
         return findClosing(openPos, '{', '}');
     }
 
+    /**
+     * Gets a name function.
+     *
+     * For example, if the program passed into the constructor was
+     *
+     * {@code
+     *      var foo = function(arg1){
+     *          return bar(arg1);
+     *      };
+     *      foo("lorumipsum");
+     * }
+     *
+     * the call
+     *
+     * {@code getFunction("foo"); }
+     *
+     * would return
+     * {@code
+     *      foo = function(arg1){
+     *          return bar(arg1);
+     *      }
+     * }
+     *
+     *
+     * @param functionName The name of the variable holding the function
+     * @return The full function, including the function name and closing brace of
+     *          the function body
+     */
     public String getFunction(String functionName) {
         int funcNameIdx = source.indexOf(functionName);
         int funcParamStartIdx = source.indexOf('(',funcNameIdx + 1);
@@ -87,6 +159,13 @@ public class JavaScript {
         return source.substring(funcNameIdx,funcBodyEndIdx + 1);
     }
 
+    /**
+     * Creates a copy of the JavaScript program, adds a parameter to a given
+     * named function, and returns the modified program
+     * @param functionName The name of the variable holding the function to be modified
+     * @param parameterName The name of the parameter to add to the function signature
+     * @return The modified JavaScript program, or null if the function could not be found
+     */
     public String appendParameter(String functionName, String parameterName){
         int currentNameIdx = source.indexOf(functionName);
 
@@ -101,6 +180,13 @@ public class JavaScript {
         return null;
     }
 
+    /**
+     * For a given named function gets the names of all the parameters declared in
+     * the function signatured
+     * @param functionName The name of the variable holding the function
+     * @return The names of the parameters declared in function 'functionName', or null
+     *          if the function cannot be found.
+     */
     public String[] getSignatureParams(String functionName){
         int currentNameIdx = source.indexOf(functionName);
 
@@ -116,6 +202,15 @@ public class JavaScript {
         return null;
     }
 
+    /**
+     * Returns the arguments passed into a call to a named function.
+     *
+     * @param functionName The name of the variable holding the function
+     * @param ordinal Determines which call to 'functionName' will be analysed
+     * @return The arguments passed into the 'ordinal'th call to 'functionName'.
+     *          Returns null if the function cannot be found, or the number of
+     *          calls is less than 'ordinal'
+     */
     public String[] getParams(String functionName, int ordinal){
 
         int currentNameIdx = -1;
@@ -141,10 +236,15 @@ public class JavaScript {
     }
 
 
+    /**
+     * A convenience method for asynchronously running a given JavaScript program
+     * @param context An Android Context
+     * @param script The JavaScript program to be run
+     * @param resultCallback The object that will be notified when the script has been evaluated
+     */
     public static void evaluate(Context context, String script, final JsCallback resultCallback) {
         new JsEvaluator(context).evaluate(script, resultCallback);
     }
-
 
     public static void callFunction(Context context, String s, JsCallback jsCallback, String functionName, Object... params) {
         new JsEvaluator(context).callFunction(s, jsCallback, functionName, params);
